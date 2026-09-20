@@ -1,4 +1,3 @@
-import profileImagePlaceholder from '../assets/profile/profile-placeholder.svg';
 import { PersonalData } from '../types';
 
 /**
