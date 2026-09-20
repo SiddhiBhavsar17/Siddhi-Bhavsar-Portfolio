@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="hackaceBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#180c2e" />
+      <stop offset="50%" stop-color="#0e0a24" />
+      <stop offset="100%" stop-color="#060414" />
+    </linearGradient>
+    <linearGradient id="purpleGoldBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+  </defs>
+
+  <!-- Frame -->
+  <rect width="640" height="420" rx="16" fill="url(#hackaceBg)" stroke="#261b47" stroke-width="2"/>
+  <rect x="18" y="18" width="604" height="384" rx="12" fill="none" stroke="url(#purpleGoldBorder)" stroke-width="1.6" opacity="0.7" />
+  <rect x="26" y="26" width="588" height="368" rx="8" fill="none" stroke="#f59e0b" stroke-width="0.8" opacity="0.3" stroke-dasharray="6 4" />
+
+  <!-- Corner Ticks -->
+  <path d="M 28 50 L 28 28 L 50 28" stroke="#f59e0b" stroke-width="2.5" fill="none" />
+  <path d="M 612 50 L 612 28 L 590 28" stroke="#ec4899" stroke-width="2.5" fill="none" />
+  <path d="M 28 370 L 28 392 L 50 392" stroke="#a855f7" stroke-width="2.5" fill="none" />
+  <path d="M 612 370 L 612 392 L 590 392" stroke="#f59e0b" stroke-width="2.5" fill="none" />
+
+  <!-- Badge: Finalist -->
+  <g transform="translate(320, 75)">
+    <rect x="-85" y="-22" width="170" height="30" rx="15" fill="#2d154d" stroke="#f59e0b" stroke-width="1.4" />
+    <text x="0" y="-3" font-family="sans-serif" font-size="12" font-weight="800" fill="#fcd34d" text-anchor="middle" letter-spacing="2">
+      ★ FINALIST ★
+    </text>
+  </g>
+
+  <text x="320" y="125" font-family="monospace" font-size="11" fill="#c084fc" text-anchor="middle" letter-spacing="3" font-weight="600">
+    HACKATHON EXCELLENCE AWARD
+  </text>
+
+  <text x="320" y="172" font-family="'Space Grotesk', system-ui, sans-serif" font-size="25" font-weight="800" fill="#ffffff" text-anchor="middle">
+    HackACE 2026
+  </text>
+
+  <!-- Project Badge -->
+  <g transform="translate(320, 218)">
+    <rect x="-110" y="-16" width="220" height="28" rx="14" fill="#130d2a" stroke="#a855f7" stroke-width="1.2" />
+    <text x="0" y="3" font-family="sans-serif" font-size="12" font-weight="700" fill="#e9d5ff" text-anchor="middle">
+      Project: Journey Bhai
+    </text>
+  </g>
+
+  <text x="320" y="268" font-family="sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">
+    Awarded for outstanding innovation in AI travel assistance and intelligent route planning
+  </text>
+
+  <line x1="160" y1="288" x2="480" y2="288" stroke="#372459" stroke-width="1" />
+
+  <g transform="translate(140, 318)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#a78bfa" text-transform="uppercase">EVENT</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="600" fill="#ffffff">HackACE</text>
+  </g>
+
+  <g transform="translate(320, 318)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#a78bfa" text-transform="uppercase" text-anchor="middle">STATUS</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="800" fill="#fcd34d" text-anchor="middle">Finalist</text>
+  </g>
+
+  <g transform="translate(480, 318)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#a78bfa" text-transform="uppercase" text-anchor="end">PROJECT</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="end">Journey Bhai</text>
+  </g>
+
+  <!-- Medal Emblem -->
+  <g transform="translate(320, 370)">
+    <circle r="18" fill="#24143d" stroke="#f59e0b" stroke-width="1.5" />
+    <polygon points="0,-8 5,6 -7,-3 7,-3 -5,6" fill="#f59e0b" />
+  </g>
+</svg>
