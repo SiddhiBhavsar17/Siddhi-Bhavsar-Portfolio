@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="adobeBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#240a12" />
+      <stop offset="50%" stop-color="#14060c" />
+      <stop offset="100%" stop-color="#080206" />
+    </linearGradient>
+    <linearGradient id="adobeBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="50%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+
+  <rect width="640" height="420" rx="16" fill="url(#adobeBg)" stroke="#3b151f" stroke-width="2"/>
+  <rect x="18" y="18" width="604" height="384" rx="12" fill="none" stroke="url(#adobeBorder)" stroke-width="1.6" opacity="0.7" />
+  <rect x="26" y="26" width="588" height="368" rx="8" fill="none" stroke="#ef4444" stroke-width="0.8" opacity="0.3" stroke-dasharray="6 4" />
+
+  <path d="M 28 50 L 28 28 L 50 28" stroke="#ef4444" stroke-width="2.5" fill="none" />
+  <path d="M 612 50 L 612 28 L 590 28" stroke="#f97316" stroke-width="2.5" fill="none" />
+  <path d="M 28 370 L 28 392 L 50 392" stroke="#a855f7" stroke-width="2.5" fill="none" />
+  <path d="M 612 370 L 612 392 L 590 392" stroke="#ef4444" stroke-width="2.5" fill="none" />
+
+  <!-- Badge: Qualified Round 2 -->
+  <g transform="translate(320, 75)">
+    <rect x="-115" y="-22" width="230" height="30" rx="15" fill="#3b0f19" stroke="#ef4444" stroke-width="1.4" />
+    <text x="0" y="-3" font-family="sans-serif" font-size="11.5" font-weight="800" fill="#fca5a5" text-anchor="middle" letter-spacing="1.5">
+      ★ QUALIFIED — ROUND 2 ★
+    </text>
+  </g>
+
+  <text x="320" y="125" font-family="monospace" font-size="11" fill="#f87171" text-anchor="middle" letter-spacing="3" font-weight="600">
+    NATIONAL HACKATHON RECOGNITION
+  </text>
+
+  <text x="320" y="170" font-family="'Space Grotesk', system-ui, sans-serif" font-size="23" font-weight="800" fill="#ffffff" text-anchor="middle">
+    Adobe University Hackathon 2026
+  </text>
+
+  <!-- Round Badge -->
+  <g transform="translate(320, 215)">
+    <rect x="-120" y="-16" width="240" height="28" rx="14" fill="#240a12" stroke="#f97316" stroke-width="1.2" />
+    <text x="0" y="3" font-family="sans-serif" font-size="12" font-weight="700" fill="#fdba74" text-anchor="middle">
+      Qualified — Round 2: Case Study
+    </text>
+  </g>
+
+  <text x="320" y="266" font-family="sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">
+    Successfully evaluated and shortlisted for Round 2 Case Study presentation
+  </text>
+
+  <line x1="160" y1="288" x2="480" y2="288" stroke="#4c1d24" stroke-width="1" />
+
+  <g transform="translate(140, 318)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#f87171" text-transform="uppercase">ORGANIZER</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="600" fill="#ffffff">Adobe</text>
+  </g>
+
+  <g transform="translate(320, 318)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#f87171" text-transform="uppercase" text-anchor="middle">STATUS</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="800" fill="#fca5a5" text-anchor="middle">Qualified</text>
+  </g>
+
+  <g transform="translate(480, 318)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#f87171" text-transform="uppercase" text-anchor="end">STAGE</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="600" fill="#fdba74" text-anchor="end">Case Study</text>
+  </g>
+
+  <g transform="translate(320, 370)">
+    <circle r="18" fill="#2d0b13" stroke="#ef4444" stroke-width="1.5" />
+    <polygon points="0,-8 5,6 -7,-3 7,-3 -5,6" fill="#ef4444" />
+  </g>
+</svg>

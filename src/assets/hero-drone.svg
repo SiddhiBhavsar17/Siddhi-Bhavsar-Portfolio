@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <!-- Metallic sphere gradient -->
+    <radialGradient id="metalBody" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#cbd5e1" />
+      <stop offset="35%" stop-color="#64748b" />
+      <stop offset="75%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </radialGradient>
+
+    <!-- Glowing cyan lens gradient -->
+    <radialGradient id="cyanEye" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="25%" stop-color="#67e8f9" />
+      <stop offset="60%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#083344" />
+    </radialGradient>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Floating Glow Shadow -->
+  <ellipse cx="100" cy="180" rx="45" ry="12" fill="#06b6d4" opacity="0.2" filter="url(#glow)" />
+
+  <!-- Drone Antenna / Thrusters -->
+  <line x1="100" y1="50" x2="100" y2="25" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round" />
+  <circle cx="100" cy="22" r="6" fill="#38bdf8" filter="url(#glow)" />
+
+  <!-- Side Wings / Propulsor Pods -->
+  <g transform="translate(100, 100)">
+    <!-- Left Wing -->
+    <path d="M -50 -10 L -80 -25 L -85 0 L -50 15 Z" fill="#475569" stroke="#64748b" stroke-width="1.5" />
+    <ellipse cx="-82" cy="-12" rx="4" ry="10" fill="#06b6d4" opacity="0.8" filter="url(#glow)" />
+
+    <!-- Right Wing -->
+    <path d="M 50 -10 L 80 -25 L 85 0 L 50 15 Z" fill="#475569" stroke="#64748b" stroke-width="1.5" />
+    <ellipse cx="82" cy="-12" rx="4" ry="10" fill="#06b6d4" opacity="0.8" filter="url(#glow)" />
+  </g>
+
+  <!-- Spherical Robot Main Body -->
+  <circle cx="100" cy="100" r="56" fill="url(#metalBody)" stroke="#475569" stroke-width="2" />
+  
+  <!-- Outer Visor Rim -->
+  <circle cx="100" cy="100" r="38" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
+
+  <!-- Glowing Cyan Camera Eye -->
+  <circle cx="100" cy="100" r="28" fill="url(#cyanEye)" filter="url(#glow)" />
+  <!-- Pupil & Reflection -->
+  <circle cx="94" cy="94" r="7" fill="#ffffff" opacity="0.9" />
+  <circle cx="104" cy="104" r="3" fill="#ffffff" opacity="0.7" />
+
+  <!-- Subtle panel lines -->
+  <path d="M 54 85 C 70 65, 130 65, 146 85" fill="none" stroke="#64748b" stroke-width="1.5" />
+  <path d="M 54 115 C 70 135, 130 135, 146 115" fill="none" stroke="#64748b" stroke-width="1.5" />
+</svg>

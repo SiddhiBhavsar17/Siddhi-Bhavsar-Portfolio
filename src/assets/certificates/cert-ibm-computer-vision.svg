@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ibmBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#041226" />
+      <stop offset="50%" stop-color="#030c1b" />
+      <stop offset="100%" stop-color="#020813" />
+    </linearGradient>
+    <linearGradient id="ibmBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1d4ed8" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+  </defs>
+
+  <rect width="640" height="420" rx="16" fill="url(#ibmBg)" stroke="#172554" stroke-width="2"/>
+  <rect x="18" y="18" width="604" height="384" rx="12" fill="none" stroke="url(#ibmBorder)" stroke-width="1.6" opacity="0.65" />
+  <rect x="26" y="26" width="588" height="368" rx="8" fill="none" stroke="#60a5fa" stroke-width="0.8" opacity="0.3" stroke-dasharray="6 4" />
+
+  <!-- Corner Ornamental Ticks -->
+  <path d="M 28 50 L 28 28 L 50 28" stroke="#3b82f6" stroke-width="2.5" fill="none" />
+  <path d="M 612 50 L 612 28 L 590 28" stroke="#38bdf8" stroke-width="2.5" fill="none" />
+  <path d="M 28 370 L 28 392 L 50 392" stroke="#2563eb" stroke-width="2.5" fill="none" />
+  <path d="M 612 370 L 612 392 L 590 392" stroke="#60a5fa" stroke-width="2.5" fill="none" />
+
+  <!-- Header Badge: IBM on Coursera -->
+  <g transform="translate(320, 75)">
+    <rect x="-100" y="-22" width="200" height="30" rx="15" fill="#0b1b3b" stroke="#2563eb" stroke-width="1.2" />
+    <text x="0" y="-3" font-family="sans-serif" font-size="11" font-weight="700" fill="#93c5fd" text-anchor="middle" letter-spacing="2">
+      IBM • COURSERA
+    </text>
+  </g>
+
+  <text x="320" y="125" font-family="monospace" font-size="11" fill="#60a5fa" text-anchor="middle" letter-spacing="3" font-weight="600">
+    COURSE CERTIFICATE
+  </text>
+
+  <text x="320" y="165" font-family="'Space Grotesk', system-ui, sans-serif" font-size="18.5" font-weight="800" fill="#ffffff" text-anchor="middle">
+    Introduction to Computer Vision
+  </text>
+  <text x="320" y="195" font-family="'Space Grotesk', system-ui, sans-serif" font-size="17" font-weight="700" fill="#60a5fa" text-anchor="middle">
+    and Image Processing
+  </text>
+
+  <text x="320" y="240" font-family="sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">
+    Authorized by IBM and offered through Coursera
+  </text>
+
+  <line x1="160" y1="262" x2="480" y2="262" stroke="#1e293b" stroke-width="1" />
+
+  <g transform="translate(100, 290)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#64748b" text-transform="uppercase">ORGANIZATION</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="600" fill="#e2e8f0">IBM</text>
+  </g>
+
+  <g transform="translate(280, 290)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#64748b" text-transform="uppercase">PLATFORM</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="600" fill="#e2e8f0">Coursera</text>
+  </g>
+
+  <g transform="translate(460, 290)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#64748b" text-transform="uppercase">TOPIC</text>
+    <text x="0" y="18" font-family="sans-serif" font-size="12" font-weight="700" fill="#38bdf8">CV &amp; DIP</text>
+  </g>
+
+  <!-- Seal -->
+  <g transform="translate(320, 360)">
+    <circle r="22" fill="#081838" stroke="#1d4ed8" stroke-width="1.8" />
+    <circle r="18" fill="none" stroke="#60a5fa" stroke-width="0.8" stroke-dasharray="3 2" />
+    <polygon points="0,-10 6,7 -9,-3 9,-3 -6,7" fill="#60a5fa" />
+  </g>
+</svg>
