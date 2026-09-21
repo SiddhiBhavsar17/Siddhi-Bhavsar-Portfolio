@@ -57,8 +57,8 @@ export const personalData: PersonalData = {
   // Path to your resume PDF (upload your real resume to /public/assets/resume/resume.pdf)
   resume: "/assets/resume/resume.pdf",
 
-  // Path to your profile picture (upload your real photo to /public/assets/profile/profile.jpg)
-  profileImage: "/assets/profile/profile.jpg",
+  // Path to your profile picture (located at /public/assets/profile/profile.jpeg)
+  profileImage: "/assets/profile/profile.jpeg",
 
   // Location
   location: "Pune, Maharashtra, India"
