@@ -28,6 +28,7 @@ export interface Project {
   demoUrl?: string;
   featured: boolean;
   mediaGallery?: ProjectMediaItem[];
+  visualType?: 'real' | 'concept';
 }
 
 export interface Certification {

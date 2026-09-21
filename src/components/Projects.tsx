@@ -1,37 +1,21 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { 
   Rocket, 
   Github, 
-  Image as ImageIcon, 
-  Sparkles, 
   Crown,
-  CheckCircle2,
-  ExternalLink
+  Maximize2
 } from 'lucide-react';
 import { projectsData } from '../data/projects';
 import { Project } from '../types';
 import { ProjectMediaModal } from './ProjectMediaModal';
-import journeyBhaiFallback from '../assets/projects/journey-bhai.svg';
-import novaSentinelFallback from '../assets/projects/novasentinel.svg';
-import signLanguageFallback from '../assets/projects/sign-language.svg';
-import constellationFallback from '../assets/projects/constellation.svg';
-import journeyBhaiLogo from '../assets/logos/journey-bhai-logo.svg';
-
-const fallbackProjectImages: Record<string, string> = {
-  'journey-bhai': journeyBhaiFallback,
-  'novasentinel': novaSentinelFallback,
-  'sign-language-translator': signLanguageFallback,
-  'constellation-explorer': constellationFallback,
-};
 
 export const Projects: React.FC = () => {
   const [mediaProject, setMediaProject] = useState<Project | null>(null);
-  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
 
-  // Flagship featured project
+  // Flagship featured project (Journey Bhai)
   const featuredProject = projectsData.find((p) => p.featured) || projectsData[0];
-  // Standard project cards
+  // Standard project cards (NovaSentinel, Sign Language, Constellation)
   const standardProjects = projectsData.filter((p) => p.id !== featuredProject.id);
 
   return (
@@ -75,37 +59,54 @@ export const Projects: React.FC = () => {
           <div className="rounded-3xl bg-[#090d26]/95 backdrop-blur-xl border border-purple-500/50 p-6 sm:p-8 lg:p-10 shadow-[0_0_35px_rgba(168,85,247,0.25)] hover:shadow-[0_0_50px_rgba(168,85,247,0.4)] transition-all duration-300">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               
-              {/* Left Column: Image / Visual Banner & Logo */}
+              {/* Left Column: Interactive Image Banner (Click to Enlarge) */}
               <div className="lg:col-span-6 space-y-4">
-                <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-[#060a1c] border border-purple-500/30 group-hover:border-purple-400/60 transition-colors shadow-2xl">
+                <button
+                  type="button"
+                  onClick={() => setMediaProject(featuredProject)}
+                  aria-label={`Enlarge ${featuredProject.name} visual`}
+                  className="w-full text-left relative aspect-[16/10] rounded-2xl overflow-hidden bg-[#060a1c] border border-purple-500/30 group-hover/canvas:border-purple-400/80 hover:border-purple-400 transition-all shadow-2xl cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-purple-500/50 block"
+                >
                   <img
-                    src={imgErrors[featuredProject.id] ? journeyBhaiFallback : featuredProject.image}
+                    src={featuredProject.image}
                     alt={featuredProject.name}
-                    onError={() => setImgErrors(prev => ({ ...prev, [featuredProject.id]: true }))}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-95 group-hover:opacity-100"
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover/canvas:scale-105 transition-transform duration-700 opacity-95 group-hover/canvas:opacity-100"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080d24] via-transparent to-transparent opacity-80" />
+                  
+                  {/* Subtle vignette gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080d24] via-transparent to-transparent opacity-80 pointer-events-none" />
 
                   {/* Top Featured Ribbon */}
-                  <div className="absolute top-4 left-4 flex items-center gap-2">
+                  <div className="absolute top-4 left-4 flex items-center gap-2 pointer-events-none z-10">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg border border-pink-300/40">
                       <Crown className="w-3.5 h-3.5 text-amber-300" />
                       <span>Featured Flagship</span>
                     </span>
                   </div>
 
-                  {/* Journey Bhai Brandmark Logo overlay */}
-                  <div className="absolute bottom-4 left-4 flex items-center gap-3 bg-[#060a1c]/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-purple-500/40 shadow-xl">
-                    <img 
-                      src={featuredProject.logo || journeyBhaiLogo} 
-                      alt="Journey Bhai Logo" 
-                      className="w-6 h-6 object-contain"
-                    />
-                    <span className="text-xs font-display font-bold text-white tracking-wider">
-                      JOURNEY BHAI
+                  {/* Hover Overlay: Click to Enlarge Indicator */}
+                  <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1px] pointer-events-none z-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/90 border border-purple-400/50 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
+                      <Maximize2 className="w-3.5 h-3.5 text-purple-300" />
+                      <span>Click to enlarge</span>
                     </span>
                   </div>
-                </div>
+
+                  {/* Journey Bhai Brandmark Logo overlay */}
+                  {featuredProject.logo && (
+                    <div className="absolute bottom-4 left-4 flex items-center gap-3 bg-[#060a1c]/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-purple-500/40 shadow-xl pointer-events-none z-10">
+                      <img 
+                        src={featuredProject.logo} 
+                        alt="Journey Bhai Logo" 
+                        className="w-6 h-6 object-cover rounded-full"
+                      />
+                      <span className="text-xs font-display font-bold text-white tracking-wider">
+                        JOURNEY BHAI
+                      </span>
+                    </div>
+                  )}
+                </button>
               </div>
 
               {/* Right Column: Project Details & Actions */}
@@ -144,26 +145,17 @@ export const Projects: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons: [ GitHub Repository ] & [ View Media ] */}
-                <div className="pt-4 border-t border-slate-800/90 flex flex-wrap items-center gap-3">
+                {/* Action: [ GitHub Repository ] */}
+                <div className="pt-4 border-t border-slate-800/90 flex items-center">
                   <a
                     href={featuredProject.githubUrl}
                     target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 py-2.5 px-5 rounded-xl text-xs sm:text-sm font-semibold font-display tracking-wider text-slate-200 bg-[#0c122e] hover:bg-[#151f4d] border border-slate-700 hover:border-slate-400 transition-all shadow-md active:scale-95"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-xl text-xs sm:text-sm font-semibold font-display tracking-wider text-slate-200 bg-[#0c122e] hover:bg-[#151f4d] border border-slate-700 hover:border-slate-400 transition-all shadow-md active:scale-95"
                   >
                     <Github className="w-4 h-4 text-slate-300" />
                     <span>GitHub Repository</span>
                   </a>
-
-                  <button
-                    type="button"
-                    onClick={() => setMediaProject(featuredProject)}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 py-2.5 px-5 rounded-xl text-xs sm:text-sm font-semibold font-display tracking-wider text-white bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 border border-purple-400/50 transition-all shadow-[0_0_18px_rgba(168,85,247,0.35)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] active:scale-95"
-                  >
-                    <ImageIcon className="w-4 h-4 text-pink-200" />
-                    <span>View Media</span>
-                  </button>
                 </div>
 
               </div>
@@ -199,35 +191,47 @@ export const Projects: React.FC = () => {
                 className={`glass-panel glass-panel-hover rounded-2xl overflow-hidden border flex flex-col justify-between group hud-corner relative shadow-xl transition-all duration-300 ${neonCardBorder}`}
               >
                 <div>
-                  {/* Project Image Banner */}
-                  <div className="relative w-full aspect-[16/10] bg-[#070b1e] overflow-hidden border-b border-slate-800/80">
+                  {/* Project Image Banner — Clickable to Enlarge */}
+                  <button
+                    type="button"
+                    onClick={() => setMediaProject(project)}
+                    aria-label={`Enlarge ${project.name} visual`}
+                    className="w-full text-left relative aspect-[16/10] bg-[#070b1e] overflow-hidden border-b border-slate-800/80 cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-cyan-500/50 block"
+                  >
                     <img 
-                      src={imgErrors[project.id] ? (fallbackProjectImages[project.id] || constellationFallback) : project.image} 
+                      src={project.image} 
                       alt={project.name}
-                      onError={() => setImgErrors(prev => ({ ...prev, [project.id]: true }))}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover/canvas:scale-105 transition-transform duration-700 opacity-90 group-hover/canvas:opacity-100"
                     />
 
                     {/* Dark Gradient Scrim */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#080d24] via-transparent to-transparent opacity-75" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#080d24] via-transparent to-transparent opacity-75 pointer-events-none" />
 
                     {/* Category Badge */}
-                    <div className="absolute top-3 left-3">
+                    <div className="absolute top-3 left-3 pointer-events-none z-10">
                       <span className={`px-2.5 py-1 rounded-full text-[11px] font-mono font-medium tracking-wide shadow-md border ${badgeStyle}`}>
                         {project.category}
                       </span>
                     </div>
 
-                    {/* Quick Media badge trigger */}
-                    <button
-                      type="button"
-                      onClick={() => setMediaProject(project)}
-                      className="absolute top-3 right-3 p-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 backdrop-blur-sm transition-colors"
-                      title="View Project Media"
-                    >
-                      <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
-                    </button>
-                  </div>
+                    {/* Concept Visual Indicator (Honest Labeling) */}
+                    {project.visualType === 'concept' && (
+                      <div className="absolute bottom-3 right-3 pointer-events-none z-10">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#060a1c]/90 border border-slate-700/80 text-slate-300 shadow">
+                          Concept Visual
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Hover Overlay: Click to Enlarge Indicator */}
+                    <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1px] pointer-events-none z-10">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/90 border border-cyan-400/50 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
+                        <Maximize2 className="w-3.5 h-3.5 text-cyan-300" />
+                        <span>Click to enlarge</span>
+                      </span>
+                    </div>
+                  </button>
 
                   {/* Card Content Body */}
                   <div className="p-5 sm:p-6 space-y-3">
@@ -259,27 +263,18 @@ export const Projects: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Dual Action Buttons: [ GitHub Repository ] and [ View Media ] */}
+                {/* Action: [ GitHub Repository ] */}
                 <div className="p-5 sm:p-6 pt-0 mt-4">
-                  <div className="pt-4 border-t border-slate-800/80 flex items-center gap-2.5">
+                  <div className="pt-4 border-t border-slate-800/80 flex items-center">
                     <a
                       href={project.githubUrl}
                       target="_blank"
-                      rel="noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-semibold font-display tracking-wider text-slate-200 bg-[#0c122e] hover:bg-[#121c46] border border-slate-700/80 hover:border-slate-500 transition-colors"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold font-display tracking-wider text-slate-200 bg-[#0c122e] hover:bg-[#121c46] border border-slate-700/80 hover:border-slate-500 transition-colors shadow-sm active:scale-95"
                     >
                       <Github className="w-3.5 h-3.5 text-slate-300" />
-                      <span>GitHub</span>
+                      <span>GitHub Repository</span>
                     </a>
-
-                    <button
-                      type="button"
-                      onClick={() => setMediaProject(project)}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-semibold font-display tracking-wider text-white bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 border border-cyan-400/30 transition-all shadow-[0_0_12px_rgba(6,182,212,0.2)] active:scale-95"
-                    >
-                      <ImageIcon className="w-3.5 h-3.5 text-cyan-200" />
-                      <span>View Media</span>
-                    </button>
                   </div>
                 </div>
               </motion.div>

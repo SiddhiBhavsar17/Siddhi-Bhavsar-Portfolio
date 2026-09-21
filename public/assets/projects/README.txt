@@ -1,17 +1,33 @@
 =============================================================================
-PROJECT SCREENSHOTS & MOCKUPS DIRECTORY (/public/assets/projects/)
+PROJECT ASSETS & OPTIONAL MEDIA DIRECTORY (/public/assets/projects/)
 =============================================================================
 
-Place your real project screenshots or banner mockups in this folder:
+CURRENT PRIMARY VISUALS (Working in production):
+- Journey Bhai:             journey-bhai.png
+- NovaSentinel:             novasentinel-concept.png
+- Sign Language Translator: sign-language-concept.png
+- Constellation Explorer:   constellation-concept.png
 
-1. Journey Bhai (AI Travel Assistant):
-   - File: journey-bhai.png (or .jpg, .webp)
-2. NovaSentinel (AI Drone Surveillance):
-   - File: novasentinel.png (or .jpg, .webp)
-3. Sign Language Translator (AI Based):
-   - File: sign-language.png (or .jpg, .webp)
-4. CampusPulse AI (Smart Campus Analytics):
-   - File: campuspulse.png (or .jpg, .webp)
+OPTIONAL ADDITIONAL MEDIA SUBFOLDERS:
+- public/assets/projects/journey-bhai/
+- public/assets/projects/novasentinel/
+- public/assets/projects/sign-language/
+- public/assets/projects/constellation/
 
-Configured in: src/data/projects.ts
+Supported formats: PNG, JPG, JPEG, WEBP, GIF, SVG, MP4, WebM
+Supported media types:
+- Screenshots
+- Architecture / system diagrams
+- Workflow diagrams
+- Video / demo walkthroughs
+
+HOW TO CONNECT ADDITIONAL MEDIA:
+In src/data/projects.ts, append items to the project's mediaGallery array:
+{
+  id: "jb-arch-diagram",
+  type: "image", // or "video"
+  title: "System Architecture",
+  url: "/assets/projects/journey-bhai/architecture.png",
+  caption: "End-to-end FastAPI and React Native architecture flow."
+}
 =============================================================================

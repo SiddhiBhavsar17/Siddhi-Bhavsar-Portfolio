@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, 
   Image as ImageIcon, 
-  Film, 
   ChevronLeft, 
   ChevronRight, 
-  Maximize2,
-  ExternalLink,
   Sparkles,
-  Info
+  ExternalLink
 } from 'lucide-react';
 import { Project, ProjectMediaItem } from '../types';
 
@@ -21,16 +18,32 @@ interface ProjectMediaModalProps {
 export const ProjectMediaModal: React.FC<ProjectMediaModalProps> = ({ project, onClose }) => {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
 
+  // Reset active index whenever the selected project changes
+  useEffect(() => {
+    setActiveMediaIndex(0);
+  }, [project?.id]);
+
+  // Support closing with Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (project) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [project, onClose]);
+
   if (!project) return null;
 
-  // Build items array from project.mediaGallery or generate graceful fallback preview item
+  // Build items array from project.mediaGallery or generate graceful preview item
   const mediaItems: ProjectMediaItem[] = (project.mediaGallery && project.mediaGallery.length > 0)
     ? project.mediaGallery
     : [
         {
           id: `${project.id}-default-img`,
           type: 'image',
-          title: `${project.name} Architecture Preview`,
+          title: `${project.name} Visual`,
           url: project.image,
           caption: project.description
         }
@@ -47,21 +60,27 @@ export const ProjectMediaModal: React.FC<ProjectMediaModalProps> = ({ project, o
     setActiveMediaIndex((prev) => (prev < mediaItems.length - 1 ? prev + 1 : 0));
   };
 
+  const isConcept = project.visualType === 'concept';
+
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md">
         {/* Backdrop click to dismiss */}
-        <div className="absolute inset-0" onClick={onClose} />
+        <div 
+          className="absolute inset-0" 
+          onClick={onClose} 
+          aria-label="Close modal overlay"
+        />
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
+          initial={{ opacity: 0, scale: 0.95, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
+          exit={{ opacity: 0, scale: 0.95, y: 12 }}
           transition={{ duration: 0.25 }}
           className="relative z-10 w-full max-w-4xl max-h-[92vh] overflow-hidden rounded-2xl bg-[#080d24] border border-cyan-500/40 shadow-[0_0_40px_rgba(6,182,212,0.25)] flex flex-col"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/80 bg-[#060a1c]/90">
+          {/* Modal Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/80 bg-[#060a1c] sticky top-0 z-20">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300 flex-shrink-0">
                 <ImageIcon className="w-4 h-4" />
@@ -71,12 +90,16 @@ export const ProjectMediaModal: React.FC<ProjectMediaModalProps> = ({ project, o
                   <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-semibold truncate">
                     {project.category}
                   </span>
-                  <span className="text-slate-600">•</span>
-                  <span className="text-[11px] font-mono text-slate-400">
-                    Media {activeMediaIndex + 1} of {mediaItems.length}
-                  </span>
+                  {hasMultiple && (
+                    <>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-[11px] font-mono text-slate-400">
+                        {activeMediaIndex + 1} of {mediaItems.length}
+                      </span>
+                    </>
+                  )}
                 </div>
-                <h3 className="text-lg sm:text-xl font-display font-bold text-white tracking-wide truncate">
+                <h3 className="text-base sm:text-xl font-display font-bold text-white tracking-wide truncate">
                   {project.name}
                 </h3>
               </div>
@@ -85,30 +108,30 @@ export const ProjectMediaModal: React.FC<ProjectMediaModalProps> = ({ project, o
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/80"
+              className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/80 ml-3 flex-shrink-0"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Media Stage Area */}
-          <div className="relative flex-1 bg-[#040612] flex items-center justify-center min-h-[300px] sm:min-h-[380px] p-4 sm:p-6 overflow-hidden">
+          {/* Media Stage Area (High-Resolution Preview) */}
+          <div className="relative flex-1 bg-[#030614] flex items-center justify-center min-h-[280px] sm:min-h-[380px] p-4 sm:p-6 overflow-hidden">
             {currentMedia.type === 'video' ? (
               <video
                 src={currentMedia.url}
                 controls
-                className="max-h-[50vh] w-auto max-w-full rounded-xl border border-slate-800 shadow-2xl object-contain"
+                className="max-h-[55vh] w-auto max-w-full rounded-xl border border-slate-800 shadow-2xl object-contain"
                 poster={currentMedia.thumbnail}
               >
                 Your browser does not support the video tag.
               </video>
             ) : (
-              <div className="relative group max-h-[52vh] flex items-center justify-center">
+              <div className="relative group max-h-[58vh] flex items-center justify-center">
                 <img
                   src={currentMedia.url}
                   alt={currentMedia.title}
-                  className="max-h-[50vh] w-auto max-w-full rounded-xl border border-slate-800/90 shadow-2xl object-contain bg-[#070b1e]"
+                  className="max-h-[55vh] w-auto max-w-full rounded-xl border border-slate-800/90 shadow-2xl object-contain bg-[#030614]"
                 />
               </div>
             )}
@@ -119,16 +142,16 @@ export const ProjectMediaModal: React.FC<ProjectMediaModalProps> = ({ project, o
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-slate-900/90 hover:bg-cyan-950 text-white border border-slate-700 hover:border-cyan-500/60 shadow-lg transition-all"
-                  aria-label="Previous media"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-slate-900/90 hover:bg-cyan-950 text-white border border-slate-700 hover:border-cyan-500/60 shadow-lg transition-all z-10"
+                  aria-label="Previous visual"
                 >
                   <ChevronLeft className="w-5 h-5 text-cyan-300" />
                 </button>
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-slate-900/90 hover:bg-cyan-950 text-white border border-slate-700 hover:border-cyan-500/60 shadow-lg transition-all"
-                  aria-label="Next media"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-slate-900/90 hover:bg-cyan-950 text-white border border-slate-700 hover:border-cyan-500/60 shadow-lg transition-all z-10"
+                  aria-label="Next visual"
                 >
                   <ChevronRight className="w-5 h-5 text-cyan-300" />
                 </button>
@@ -150,10 +173,14 @@ export const ProjectMediaModal: React.FC<ProjectMediaModalProps> = ({ project, o
                 )}
               </div>
 
-              {/* Centralized Media placeholder notice */}
-              <div className="flex items-center gap-2 text-[11px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1.5 rounded-lg flex-shrink-0">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Media Asset Ready</span>
+              {/* Status Pill */}
+              <div className="flex items-center gap-2 text-[11px] font-mono px-3 py-1.5 rounded-lg flex-shrink-0 self-start sm:self-auto border bg-slate-900/80">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                {isConcept ? (
+                  <span className="text-slate-300">Project Concept Visual</span>
+                ) : (
+                  <span className="text-cyan-300">Official Project Asset</span>
+                )}
               </div>
             </div>
 

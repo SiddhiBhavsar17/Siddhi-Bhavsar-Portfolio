@@ -1,22 +1,15 @@
 import { Project } from '../types';
-import journeyBhaiImg from '../assets/projects/journey-bhai.svg';
-import journeyBhaiLogo from '../assets/logos/journey-bhai-logo.svg';
-import novaSentinelImg from '../assets/projects/novasentinel.svg';
-import signLanguageImg from '../assets/projects/sign-language.svg';
-import constellationImg from '../assets/projects/constellation.svg';
 
 /**
  * ============================================================================
  * CENTRALIZED EDITABLE PROJECTS DATA
  * ============================================================================
- * 1. Journey Bhai (Featured flagship project with logo & enhanced prominence)
- * 2. NovaSentinel (AI Drone Surveillance)
- * 3. Sign Language Translator (AI-Based Computer Vision)
- * 4. Constellation Explorer (Image Processing + Interactive Game)
+ * All visual assets are stored directly in public/assets/projects/ and public/assets/logos/
  * 
- * - Update GitHub repo links with your actual URLs.
- * - Replace images in src/assets/projects/ or assign any image URL/import.
- * - Media paths are editable in mediaGallery for screenshots, images, & videos.
+ * 1. Journey Bhai (Flagship project with authentic logo & brand visual)
+ * 2. NovaSentinel (AI Drone Surveillance — Concept Visual)
+ * 3. Sign Language Translator (AI-Based Computer Vision — Concept Visual)
+ * 4. Constellation Explorer (Image Processing + Interactive Game — Concept Visual)
  * ============================================================================
  */
 export const projectsData: Project[] = [
@@ -42,24 +35,25 @@ export const projectsData: Project[] = [
       "Hands-free conversational assistance using Speech-to-Text and fine-tuned domain NLP/LLM pipelines.",
       "Robust asynchronous backend built with FastAPI, PostgreSQL relational persistence, and cross-platform React Native app."
     ],
-    image: journeyBhaiImg,
-    logo: journeyBhaiLogo,
-    githubUrl: "https://github.com/YOUR_GITHUB_URL/journey-bhai",
+    image: "/assets/projects/journey-bhai.png",
+    logo: "/assets/logos/journey-bhai-logo.jpeg",
+    githubUrl: "https://github.com/SiddhiBhavsar17/Journey-Bhai",
     featured: true,
+    visualType: "real",
     mediaGallery: [
       {
         id: "jb-media-1",
         type: "image",
-        title: "Journey Bhai Architecture & Itinerary Engine",
-        url: journeyBhaiImg,
-        caption: "Full journey planning interface with AI route adaptation and dynamic budget estimator."
+        title: "Journey Bhai Project Visual",
+        url: "/assets/projects/journey-bhai.png",
+        caption: "AI-powered travel companion architecture featuring personalized itinerary generation and intelligent routing."
       },
       {
         id: "jb-media-2",
         type: "image",
-        title: "Official Brand Identity & Logo",
-        url: journeyBhaiLogo,
-        caption: "Brandmark representing modern intelligent travel companionship."
+        title: "Journey Bhai Official Logo",
+        url: "/assets/logos/journey-bhai-logo.jpeg",
+        caption: "Official brand identity logo for Journey Bhai travel assistant."
       }
     ]
   },
@@ -81,16 +75,17 @@ export const projectsData: Project[] = [
       "Facial recognition and identity verification modules built with OpenCV and deep feature embeddings.",
       "Automated threat alert system triggering instant visual and telemetry notifications upon perimeter intrusion."
     ],
-    image: novaSentinelImg,
-    githubUrl: "https://github.com/YOUR_GITHUB_URL/novasentinel",
+    image: "/assets/projects/novasentinel-concept.png",
+    githubUrl: "https://github.com/SiddhiBhavsar17/NovaSentinel-AI-Powered-Drone-Surveillance-System",
     featured: false,
+    visualType: "concept",
     mediaGallery: [
       {
         id: "ns-media-1",
         type: "image",
-        title: "NovaSentinel Drone Vision Feed",
-        url: novaSentinelImg,
-        caption: "Real-time edge detection overlay showing bounding boxes, tracking IDs, and threat telemetry."
+        title: "NovaSentinel Drone Surveillance — Concept Visual",
+        url: "/assets/projects/novasentinel-concept.png",
+        caption: "System concept visual illustrating real-time aerial computer vision, object detection, and threat telemetry monitoring."
       }
     ]
   },
@@ -112,16 +107,17 @@ export const projectsData: Project[] = [
       "Natural Language Processing pipeline synthesizing recognized token sequences into grammatically coherent sentences.",
       "Accessible visual interface converting recognized signs into real-time text output for seamless communication."
     ],
-    image: signLanguageImg,
-    githubUrl: "https://github.com/YOUR_GITHUB_URL/sign-language-translator",
+    image: "/assets/projects/sign-language-concept.png",
+    githubUrl: "https://github.com/SiddhiBhavsar17/sign-language-translator",
     featured: false,
+    visualType: "concept",
     mediaGallery: [
       {
         id: "slt-media-1",
         type: "image",
-        title: "Gesture Recognition & Landmark Pipeline",
-        url: signLanguageImg,
-        caption: "Computer vision tracking analyzing hand pose landmarks and rendering immediate translated text."
+        title: "Sign Language Translator — Concept Visual",
+        url: "/assets/projects/sign-language-concept.png",
+        caption: "System concept visual illustrating hand landmark coordinate mapping, gesture classification, and text translation pipeline."
       }
     ]
   },
@@ -142,16 +138,17 @@ export const projectsData: Project[] = [
       "Constellation identification engine mapping detected geometric star nodes against astronomical star catalogs.",
       "Interactive gamified scoring system rewarding precision, speed, and accuracy in identifying constellations."
     ],
-    image: constellationImg,
-    githubUrl: "https://github.com/YOUR_GITHUB_URL/constellation-explorer",
+    image: "/assets/projects/constellation-concept.png",
+    githubUrl: "https://github.com/SiddhiBhavsar17/DIP-project",
     featured: false,
+    visualType: "concept",
     mediaGallery: [
       {
         id: "ce-media-1",
         type: "image",
-        title: "Constellation Denoising & Interactive Game HUD",
-        url: constellationImg,
-        caption: "Digital image processing denoising filter revealing celestial star nodes with interactive score tracking."
+        title: "Constellation Explorer — Concept Visual",
+        url: "/assets/projects/constellation-concept.png",
+        caption: "System concept visual illustrating astronomical image denoising, celestial star detection, and gamified constellation discovery."
       }
     ]
   }
