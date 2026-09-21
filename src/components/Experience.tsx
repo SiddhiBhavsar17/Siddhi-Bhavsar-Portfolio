@@ -10,11 +10,44 @@ import {
   Sparkles,
   Monitor,
   ExternalLink,
-  Bot
+  Bot,
+  FileCheck2,
+  FileBadge
 } from 'lucide-react';
 import { experienceData } from '../data/experience';
+import { ExperienceDocument } from '../types';
 
 export const Experience: React.FC = () => {
+  // Helper to render appropriate icon based on document purpose
+  const getDocumentIcon = (doc: ExperienceDocument) => {
+    switch (doc.type) {
+      case 'offer-letter':
+        return <FileText className="w-4 h-4 text-purple-400 flex-shrink-0" />;
+      case 'internship-certificate':
+        return <Award className="w-4 h-4 text-cyan-200 flex-shrink-0" />;
+      case 'experience-certificate':
+        return <FileBadge className="w-4 h-4 text-emerald-300 flex-shrink-0" />;
+      case 'letter-of-recommendation':
+        return <FileCheck2 className="w-4 h-4 text-amber-300 flex-shrink-0" />;
+      default:
+        return <FileText className="w-4 h-4 text-cyan-300 flex-shrink-0" />;
+    }
+  };
+
+  // Helper to style buttons based on document type
+  const getDocumentButtonClasses = (doc: ExperienceDocument) => {
+    switch (doc.type) {
+      case 'offer-letter':
+        return "bg-purple-950/50 hover:bg-purple-900/60 border border-purple-500/40 hover:border-purple-300 text-purple-200 hover:text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]";
+      case 'internship-certificate':
+        return "bg-gradient-to-r from-cyan-600/90 via-blue-600/90 to-indigo-600/90 hover:from-cyan-500 hover:to-indigo-500 text-white shadow-lg shadow-cyan-950/50 hover:shadow-cyan-500/25";
+      case 'experience-certificate':
+        return "bg-gradient-to-r from-emerald-600/90 to-teal-600/90 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-950/50";
+      default:
+        return "bg-slate-900/90 hover:bg-slate-800 border border-cyan-500/30 text-cyan-200 hover:text-white";
+    }
+  };
+
   return (
     <section id="experience" className="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Background ambient lighting accent */}
@@ -123,45 +156,50 @@ export const Experience: React.FC = () => {
 
               {/* 5. Documents / Action Buttons (Open in New Tab) */}
               <div className="pt-5 mt-4 border-t border-slate-800/80 flex flex-wrap items-center gap-3">
-                {/* Labmentix: View Experience Certificate & View Offer Letter */}
-                {isLabmentix && (
+                {/* Dynamically render structured purpose-mapped documents */}
+                {item.documents && item.documents.length > 0 ? (
+                  item.documents.map((doc) => (
+                    <a
+                      key={doc.id}
+                      href={doc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-display font-semibold tracking-wider transition-all active:scale-95 ${getDocumentButtonClasses(doc)}`}
+                      title={`${doc.title} (${item.organization})`}
+                    >
+                      {getDocumentIcon(doc)}
+                      <span>{doc.label}</span>
+                      <ExternalLink className="w-3.5 h-3.5 opacity-80 ml-0.5" />
+                    </a>
+                  ))
+                ) : (
+                  /* Fallback for legacy single/dual document properties */
                   <>
-                    <a
-                      href={item.certificateUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600/90 via-blue-600/90 to-indigo-600/90 hover:from-cyan-500 hover:to-indigo-500 text-white text-xs font-display font-semibold tracking-wider shadow-lg shadow-cyan-950/50 hover:shadow-cyan-500/25 active:scale-95 transition-all"
-                    >
-                      <Award className="w-4 h-4 text-cyan-200" />
-                      <span>View Experience Certificate</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-cyan-200 ml-0.5" />
-                    </a>
-
-                    <a
-                      href={item.offerLetterUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-950/50 hover:bg-purple-900/50 border border-purple-500/40 hover:border-purple-400 text-purple-200 text-xs font-display font-semibold tracking-wider shadow active:scale-95 transition-all"
-                    >
-                      <FileText className="w-4 h-4 text-purple-400" />
-                      <span>View Offer Letter</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-purple-300 ml-0.5" />
-                    </a>
+                    {item.certificateUrl && (
+                      <a
+                        href={item.certificateUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600/90 via-blue-600/90 to-indigo-600/90 hover:from-cyan-500 hover:to-indigo-500 text-white text-xs font-display font-semibold tracking-wider shadow-lg shadow-cyan-950/50 hover:shadow-cyan-500/25 active:scale-95 transition-all"
+                      >
+                        <Award className="w-4 h-4 text-cyan-200" />
+                        <span>View {item.certificateTitle || "Certificate"}</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-cyan-200 ml-0.5" />
+                      </a>
+                    )}
+                    {item.offerLetterUrl && (
+                      <a
+                        href={item.offerLetterUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-950/50 hover:bg-purple-900/50 border border-purple-500/40 hover:border-purple-400 text-purple-200 text-xs font-display font-semibold tracking-wider shadow active:scale-95 transition-all"
+                      >
+                        <FileText className="w-4 h-4 text-purple-400" />
+                        <span>View {item.offerLetterTitle || "Offer Letter"}</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-purple-300 ml-0.5" />
+                      </a>
+                    )}
                   </>
-                )}
-
-                {/* Tata Group × Forage: View Certificate */}
-                {!isLabmentix && (
-                  <a
-                    href={item.certificateUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600/90 via-indigo-600/90 to-cyan-600/90 hover:from-purple-500 hover:to-cyan-500 text-white text-xs font-display font-semibold tracking-wider shadow-lg shadow-purple-950/50 hover:shadow-purple-500/25 active:scale-95 transition-all"
-                  >
-                    <Award className="w-4 h-4 text-purple-200" />
-                    <span>View Certificate</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-cyan-200 ml-0.5" />
-                  </a>
                 )}
               </div>
             </motion.div>

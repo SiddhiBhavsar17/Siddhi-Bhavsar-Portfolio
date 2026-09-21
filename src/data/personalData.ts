@@ -54,8 +54,8 @@ export const personalData: PersonalData = {
   hackerrank: "https://www.hackerrank.com/profile/bhavsarsiddhi14",
   leetcode: "https://leetcode.com/u/bhavsarsiddhi14/",
 
-  // Path to your resume PDF (upload your real resume to /public/assets/resume/resume.pdf)
-  resume: "/assets/resume/resume.pdf",
+  // Path to your official resume PDF (exact active file in public/assets/resume/)
+  resume: "/assets/resume/Siddhi_Bhavsar_2026_Latest_Resume2.1.pdf",
 
   // Path to your profile picture (located at /public/assets/profile/profile.jpeg)
   profileImage: "/assets/profile/profile.jpeg",

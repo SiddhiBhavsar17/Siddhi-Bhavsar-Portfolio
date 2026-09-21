@@ -1,5 +1,5 @@
 import React from 'react';
-import { Orbit, ArrowUp } from 'lucide-react';
+import { Orbit, ArrowUp, FileDown, Eye } from 'lucide-react';
 import { personalData } from '../data/personalData';
 
 export const Footer: React.FC = () => {
@@ -28,8 +28,35 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Copyright information + Back to top button */}
-        <div className="flex items-center gap-4">
+        {/* Right: View & Download Resume links + Copyright information + Back to top button */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* View Resume link */}
+          <a
+            href={personalData.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 text-cyan-400 hover:text-cyan-300 font-mono text-[11px] transition-colors"
+            title="View Official Resume (PDF in browser)"
+            id="footer-view-resume-link"
+          >
+            <Eye className="w-3.5 h-3.5 text-cyan-400" />
+            <span>View Resume</span>
+          </a>
+
+          {/* Download Resume link */}
+          <a
+            href={personalData.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            download={`${personalData.name.replace(/\s+/g, '_')}_Resume.pdf`}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/40 text-purple-300 hover:text-purple-200 font-mono text-[11px] transition-colors"
+            title="Download Official Resume (PDF)"
+            id="footer-download-resume-link"
+          >
+            <FileDown className="w-3.5 h-3.5 text-purple-400" />
+            <span>Download</span>
+          </a>
+
           <span className="text-xs text-slate-400 font-mono">
             &copy; {new Date().getFullYear()} {personalData.name}. All rights reserved.
           </span>

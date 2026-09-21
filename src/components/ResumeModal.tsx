@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, FileDown, FileText, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
+import { X, FileDown, FileText, CheckCircle2, ExternalLink, Loader2, Eye } from 'lucide-react';
 import { personalData } from '../data/personalData';
+import { downloadResumeFile } from '../utils/resume';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -9,15 +10,13 @@ interface ResumeModalProps {
 }
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
+  const [isDownloading, setIsDownloading] = useState(false);
   if (!isOpen) return null;
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = personalData.resume;
-    link.download = `${personalData.name.replace(/\s+/g, '_')}_Resume.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    await downloadResumeFile();
+    setIsDownloading(false);
   };
 
   return (
@@ -69,38 +68,51 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               <span className="text-violet-300">{personalData.specialization.join(' • ')}</span>
             </div>
 
-            {/* Asset Replacement Notice */}
-            <div className="p-3.5 rounded-lg bg-cyan-950/40 border border-cyan-500/25 flex items-start gap-2.5 text-xs text-cyan-200">
-              <AlertCircle className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <span className="font-semibold block text-white">Centralized Data Configuration:</span>
-                <span>Configured in <code className="bg-black/50 px-1 py-0.5 rounded font-mono text-cyan-300">src/data/personalData.ts</code>. Replace <code className="bg-black/50 px-1 py-0.5 rounded font-mono text-cyan-300">{personalData.resume}</code> with your PDF file path.</span>
+            {/* Verified Resume Status */}
+            <div className="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/25 flex items-center gap-2.5 text-xs text-emerald-300">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+              <div className="flex-1 flex items-center justify-between">
+                <span className="font-semibold text-emerald-200">Official Resume PDF Active</span>
+                <span className="font-mono text-[11px] text-emerald-400/80">Siddhi_Bhavsar_2026_Latest_Resume2.1.pdf</span>
               </div>
             </div>
           </div>
 
           {/* Download & Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
-            <button
-              type="button"
-              onClick={handleDownload}
-              id="modal-download-resume-action"
-              className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-display font-semibold text-xs tracking-wider shadow-lg shadow-cyan-950/50 active:scale-95 transition-all"
-            >
-              <FileDown className="w-4 h-4" />
-              <span>Download Official Resume (PDF)</span>
-            </button>
-
+            {/* View Resume Button (Opens PDF in browser tab without downloading) */}
             <a
               href={personalData.resume}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               id="modal-view-resume-browser"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-cyan-500/30 text-cyan-300 hover:text-cyan-200 text-xs font-display font-medium transition-colors"
+              className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-gradient-to-r from-cyan-950/80 via-slate-900 to-[#0c1436] hover:from-cyan-900/80 hover:to-indigo-900/70 border border-cyan-500/50 hover:border-cyan-300 text-cyan-200 hover:text-white font-display font-semibold text-xs tracking-wider shadow-md hover:shadow-[0_0_20px_rgba(6,182,212,0.35)] active:scale-95 transition-all"
             >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>View</span>
+              <Eye className="w-4 h-4 text-cyan-400" />
+              <span>View Resume (PDF)</span>
+              <ExternalLink className="w-3.5 h-3.5 text-cyan-400/70 ml-0.5" />
             </a>
+
+            {/* Download Resume Button (Downloads the exact same real PDF) */}
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={isDownloading}
+              id="modal-download-resume-action"
+              className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-display font-semibold text-xs tracking-wider shadow-lg shadow-cyan-950/50 active:scale-95 transition-all disabled:opacity-75"
+            >
+              {isDownloading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  <span>Downloading...</span>
+                </>
+              ) : (
+                <>
+                  <FileDown className="w-4 h-4" />
+                  <span>Download Resume</span>
+                </>
+              )}
+            </button>
 
             <button
               type="button"

@@ -61,6 +61,22 @@ export interface Achievement {
   proofImage?: string;
 }
 
+export type ExperienceDocumentType = 
+  | 'offer-letter' 
+  | 'internship-certificate' 
+  | 'experience-certificate' 
+  | 'letter-of-recommendation'
+  | 'other';
+
+export interface ExperienceDocument {
+  id: string;
+  title: string;              // e.g., "Offer Letter", "Experience Certificate", "Certificate"
+  label: string;              // Button display text, e.g., "View Offer Letter", "View Certificate"
+  url: string;                // PDF path, e.g., "/assets/experience/LabMentix_Offer_Letter.pdf"
+  type: ExperienceDocumentType; // Categorical document type
+  downloadName?: string;      // Optional custom filename when downloaded
+}
+
 export interface ExperienceItem {
   id: string;
   role: string;
@@ -71,11 +87,12 @@ export interface ExperienceItem {
   type?: string;
   description: string;
   technologies: string[];
-  certificateUrl?: string;
-  certificateTitle?: string;
-  offerLetterUrl?: string;
-  offerLetterTitle?: string;
-  documentUrl?: string;
+  documents?: ExperienceDocument[]; // Structured, purpose-mapped documents
+  certificateUrl?: string;          // Backward compatibility
+  certificateTitle?: string;        // Backward compatibility
+  offerLetterUrl?: string;          // Backward compatibility
+  offerLetterTitle?: string;        // Backward compatibility
+  documentUrl?: string;             // Backward compatibility
 }
 
 export interface EducationItem {

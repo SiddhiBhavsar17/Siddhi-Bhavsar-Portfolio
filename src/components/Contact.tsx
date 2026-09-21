@@ -86,7 +86,7 @@ export const Contact: React.FC<ContactProps> = ({ onOpenResume }) => {
       name: "Resume",
       href: personalData.resume,
       icon: <FileDown className="w-6 h-6" />,
-      tag: "Verified CV / PDF",
+      tag: "View & Download CV (PDF)",
       color: "purple",
       borderHover: "hover:border-purple-500/60 hover:shadow-[0_0_24px_rgba(168,85,247,0.25)]",
       iconBg: "bg-purple-500/10 border-purple-500/30 text-purple-400",

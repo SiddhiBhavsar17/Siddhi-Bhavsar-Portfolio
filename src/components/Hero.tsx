@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   FileDown, 
-  ArrowRight
+  ArrowRight,
+  Loader2,
+  Eye
 } from 'lucide-react';
 import { personalData } from '../data/personalData';
+import { downloadResumeFile } from '../utils/resume';
 import heroDroneImg from '../assets/hero-drone.svg';
 import profileFallback from '../assets/profile/profile-placeholder.svg';
 
@@ -14,9 +17,20 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
   const [avatarError, setAvatarError] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const fullName = personalData.name.toUpperCase();
   const [typedName, setTypedName] = useState('');
   const [typingComplete, setTypingComplete] = useState(false);
+
+  const handleDownloadResume = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDownloading(true);
+    try {
+      await downloadResumeFile();
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   // Reset avatar error state whenever profileImage changes
   useEffect(() => {
@@ -117,48 +131,28 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
         </motion.div>
 
         {/* ----------------------------------------------------------------------- */}
-        {/* SOLAR STAGE: CENTRAL PROFILE ("SUN") + 3 ORBITAL RINGS                  */}
-        {/* Desktop: 640px stage, Tablet: 480px, Mobile: 340px                     */}
+        {/* SOLAR STAGE: CENTRAL PROFILE ("SUN") + SINGLE ORBITAL RING              */}
+        {/* Desktop: 500px stage, Tablet: 400px, Mobile: 300px                     */}
         {/* ----------------------------------------------------------------------- */}
-        <div className="relative w-[340px] h-[340px] sm:w-[480px] sm:h-[480px] lg:w-[640px] lg:h-[640px] flex items-center justify-center my-2">
+        <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px] flex items-center justify-center my-2">
 
           {/* ===================================================================== */}
-          {/* ORBIT RING 1: INNER ORBIT (Subtle decorative orbital path)             */}
+          {/* SINGLE ORBITAL RING (Subtle, elegant decorative orbit)                */}
           {/* ===================================================================== */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.15 }}
-            className="absolute w-[210px] h-[210px] sm:w-[270px] sm:h-[270px] lg:w-[330px] lg:h-[330px] rounded-full border border-cyan-400/20 border-dashed pointer-events-none shadow-[0_0_12px_rgba(6,182,212,0.06)]"
+            transition={{ duration: 1, delay: 0.2 }}
+            className="absolute w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] lg:w-[480px] lg:h-[480px] rounded-full border border-cyan-400/25 border-dashed pointer-events-none shadow-[0_0_16px_rgba(6,182,212,0.08)]"
           />
 
           {/* ===================================================================== */}
-          {/* ORBIT RING 2: MIDDLE ORBIT (Subtle decorative orbital path)            */}
-          {/* ===================================================================== */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="absolute w-[290px] h-[290px] sm:w-[380px] sm:h-[380px] lg:w-[480px] lg:h-[480px] rounded-full border border-purple-500/15 pointer-events-none shadow-[0_0_14px_rgba(168,85,247,0.05)]"
-          />
-
-          {/* ===================================================================== */}
-          {/* ORBIT RING 3: OUTER ORBIT (Subtle decorative orbital path)             */}
-          {/* ===================================================================== */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.45 }}
-            className="absolute w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] lg:w-[610px] lg:h-[610px] rounded-full border border-indigo-400/15 border-dashed pointer-events-none shadow-[0_0_16px_rgba(99,102,241,0.04)]"
-          />
-
-          {/* ===================================================================== */}
-          {/* THE ONLY ORBITING ELEMENT: AI SATELLITE ON THE OUTER ORBITAL PATH     */}
+          {/* THE ONLY ORBITING ELEMENT: AI SATELLITE ON THE SINGLE ORBITAL PATH    */}
           {/* Smoothly and continuously revolves around the central profile         */}
           {/* Elegant, subtle glowing trail, non-intrusive and secondary to profile */}
           {/* ===================================================================== */}
-          <div className="absolute w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] lg:w-[610px] lg:h-[610px] animate-[spin_36s_linear_infinite] pointer-events-none z-20">
-            {/* Position bot on outer ring (top: 0%, left: 50%) */}
+          <div className="absolute w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] lg:w-[480px] lg:h-[480px] animate-[spin_32s_linear_infinite] pointer-events-none z-20">
+            {/* Position bot on the single orbital ring (top: 0%, left: 50%) */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
               {/* Counter-rotate so the bot stays naturally oriented with gentle bobbing */}
               <motion.div 
@@ -334,15 +328,39 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
           className="mt-7 flex flex-wrap items-center justify-center gap-4 w-full sm:w-auto"
         >
           {/* Download Resume Button */}
-          <button
-            type="button"
-            onClick={onOpenResume}
+          <a
+            href={personalData.resume}
+            download={`${personalData.name.replace(/\s+/g, '_')}_Resume.pdf`}
+            onClick={handleDownloadResume}
             id="hero-download-resume-btn"
-            className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 border border-cyan-400/40 shadow-[0_0_20px_rgba(99,102,241,0.35)] hover:shadow-[0_0_28px_rgba(56,189,248,0.5)] transition-all active:scale-[0.98]"
+            className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 border border-cyan-400/40 shadow-[0_0_20px_rgba(99,102,241,0.35)] hover:shadow-[0_0_28px_rgba(56,189,248,0.5)] transition-all active:scale-[0.98] cursor-pointer"
+            title="Download Official Resume (PDF)"
           >
-            <FileDown className="w-4 h-4 text-cyan-200 group-hover:translate-y-0.5 transition-transform" />
-            <span>Download Resume</span>
-          </button>
+            {isDownloading ? (
+              <>
+                <Loader2 className="w-4 h-4 text-cyan-200 animate-spin" />
+                <span>Downloading...</span>
+              </>
+            ) : (
+              <>
+                <FileDown className="w-4 h-4 text-cyan-200 group-hover:translate-y-0.5 transition-transform" />
+                <span>Download Resume</span>
+              </>
+            )}
+          </a>
+
+          {/* View Resume Button (Opens the real resume PDF directly in browser/viewer) */}
+          <a
+            href={personalData.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            id="hero-view-resume-btn"
+            className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-cyan-200 hover:text-white bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-[#0c1436]/90 hover:from-cyan-900/70 hover:to-indigo-900/60 border border-cyan-500/50 hover:border-cyan-300 shadow-[0_0_16px_rgba(6,182,212,0.22)] hover:shadow-[0_0_26px_rgba(6,182,212,0.45)] backdrop-blur-md transition-all active:scale-[0.98] cursor-pointer"
+            title="View Official Resume (PDF in browser)"
+          >
+            <Eye className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+            <span>View Resume</span>
+          </a>
 
           {/* Explore Projects Button */}
           <a

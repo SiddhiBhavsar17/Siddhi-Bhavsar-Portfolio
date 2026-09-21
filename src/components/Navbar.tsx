@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight, Orbit, FileDown } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Orbit, FileDown, Eye } from 'lucide-react';
 import { personalData } from '../data/personalData';
 
 interface NavbarProps {
@@ -120,8 +120,33 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
           })}
         </nav>
 
-        {/* Right Actions: "Let's Connect" Button */}
-        <div className="hidden sm:flex items-center gap-3">
+        {/* Right Actions: View Resume + Resume Hub + Let's Connect */}
+        <div className="hidden sm:flex items-center gap-2.5">
+          {/* View Resume Direct Action */}
+          <a
+            href={personalData.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            id="nav-view-resume-btn"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold font-display tracking-wider text-cyan-300 hover:text-white bg-slate-900/80 hover:bg-[#0c1436] border border-cyan-500/30 hover:border-cyan-400/60 transition-all shadow-sm active:scale-95"
+            title="View Official Resume (PDF)"
+          >
+            <Eye className="w-3.5 h-3.5 text-cyan-400" />
+            <span>View Resume</span>
+          </a>
+
+          {/* Resume Modal Hub Action */}
+          <button
+            type="button"
+            onClick={onOpenResume}
+            id="nav-resume-btn"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold font-display tracking-wider text-slate-300 hover:text-white bg-slate-900/60 hover:bg-[#0c1436] border border-slate-700/80 hover:border-purple-500/50 transition-all shadow-sm active:scale-95"
+            title="Download Official Resume & Details"
+          >
+            <FileDown className="w-3.5 h-3.5 text-purple-400" />
+            <span>Download</span>
+          </button>
+
           {/* Let's Connect Button */}
           <button
             type="button"
@@ -183,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
             })}
           </div>
 
-          <div className="pt-2 border-t border-slate-800/80 flex gap-2">
+          <div className="pt-2 border-t border-slate-800/80 flex items-center gap-2">
             <button
               type="button"
               onClick={handleConnectClick}
@@ -192,14 +217,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
               <span>Let&apos;s Connect</span>
               <ArrowUpRight className="w-4 h-4" />
             </button>
+            <a
+              href={personalData.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 py-2.5 px-3 rounded-lg bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 border border-cyan-500/40 text-xs font-mono font-medium"
+              title="View Resume in Browser"
+              id="mobile-view-resume-btn"
+            >
+              <Eye className="w-4 h-4" />
+              <span>View</span>
+            </a>
             <button
               type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenResume();
               }}
-              className="p-2.5 rounded-lg bg-slate-800 text-cyan-300 border border-slate-700"
-              title="Resume"
+              className="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-purple-300 border border-slate-700"
+              title="Download Resume"
+              id="mobile-download-resume-btn"
             >
               <FileDown className="w-4 h-4" />
             </button>
