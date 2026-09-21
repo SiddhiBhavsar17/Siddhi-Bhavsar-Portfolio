@@ -43,7 +43,7 @@ export const experienceData: ExperienceItem[] = [
         label: "View Certificate",
         url: "/assets/experience/LabMentix_Certificate.pdf",
         type: "internship-certificate",
-        downloadName: "LabMentix_Internship_Certificate.pdf"
+        downloadName: "LabMentix_Certificate.pdf"
       }
     ],
     // Backward compatibility fallback fields
