@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ExternalLink, Award, FileText } from 'lucide-react';
 import { Certification } from '../types';
@@ -9,28 +9,41 @@ interface CertificateModalProps {
 }
 
 export const CertificateModal: React.FC<CertificateModalProps> = ({ certification, onClose }) => {
+  // Smoothly close modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (certification) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [certification, onClose]);
+
   if (!certification) return null;
 
-  const isPdf = certification.documentUrl?.toLowerCase().endsWith('.pdf') || 
-                certification.thumbnail?.toLowerCase().endsWith('.pdf');
-  const previewSource = certification.thumbnail;
-  const externalDoc = certification.documentUrl || (isPdf ? certification.thumbnail : undefined);
+  const certificateImage = certification.previewUrl || certification.thumbnail;
+  const externalDoc = certification.documentUrl;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md">
         {/* Backdrop click to close */}
-        <div className="absolute inset-0" onClick={onClose} />
+        <div 
+          className="absolute inset-0" 
+          onClick={onClose} 
+          aria-label="Close modal overlay"
+        />
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 12 }}
+          initial={{ opacity: 0, scale: 0.95, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 12 }}
+          exit={{ opacity: 0, scale: 0.95, y: 16 }}
           transition={{ duration: 0.25 }}
-          className="relative z-10 w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#080d24] border border-cyan-500/40 shadow-[0_0_40px_rgba(6,182,212,0.25)] flex flex-col"
+          className="relative z-10 w-full max-w-4xl max-h-[94vh] overflow-y-auto rounded-2xl bg-[#080d24] border border-cyan-500/40 shadow-[0_0_50px_rgba(6,182,212,0.3)] flex flex-col"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/80 bg-[#060a1c]">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/80 bg-[#060a1c] sticky top-0 z-20">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 flex-shrink-0">
                 <Award className="w-5 h-5" />
@@ -39,7 +52,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificatio
                 <span className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-semibold block truncate">
                   {certification.issuer}
                 </span>
-                <h3 className="text-lg sm:text-xl font-display font-bold text-white tracking-wide truncate">
+                <h3 className="text-base sm:text-xl font-display font-bold text-white tracking-wide truncate">
                   {certification.name}
                 </h3>
               </div>
@@ -48,31 +61,23 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificatio
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/80 flex-shrink-0"
+              className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/80 flex-shrink-0 ml-3"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Certificate Stage / Lightbox View */}
-          <div className="relative bg-[#040612] flex items-center justify-center min-h-[280px] sm:min-h-[380px] p-4 sm:p-6 overflow-hidden border-b border-slate-800/80">
-            {isPdf ? (
-              <iframe
-                src={previewSource}
-                title={certification.name}
-                className="w-full h-[52vh] rounded-xl border border-slate-800 bg-[#070b1e]"
-              />
-            ) : (
-              <img
-                src={previewSource}
-                alt={certification.name}
-                className="max-h-[52vh] w-auto max-w-full rounded-xl border border-slate-800 shadow-2xl object-contain bg-[#070b1e]"
-              />
-            )}
+          {/* Real Certificate Document Canvas (High-Resolution Preview) */}
+          <div className="relative bg-[#030614] flex items-center justify-center p-4 sm:p-6 overflow-hidden border-b border-slate-800/80 min-h-[300px]">
+            <img
+              src={certificateImage}
+              alt={`${certification.name} - Verified Document`}
+              className="max-h-[62vh] w-auto max-w-full rounded-lg border border-slate-700/60 shadow-2xl object-contain bg-[#030614]"
+            />
           </div>
 
-          {/* Certificate Details Body */}
+          {/* Certificate Metadata & Details Body */}
           <div className="p-5 sm:p-6 space-y-4 bg-[#080d24]">
             {/* Metadata Badges */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#0a102c] border border-slate-800/90 text-xs">
@@ -125,18 +130,19 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificatio
           </div>
 
           {/* Action Footer */}
-          <div className="px-5 py-4 bg-[#060a1c] border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+          <div className="px-5 py-4 bg-[#060a1c] border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 sticky bottom-0 z-20">
             <div className="flex items-center gap-2.5">
-              {/* Browser PDF / Document Link if exists */}
+              {/* Direct PDF Link (Opens in new tab, 100% Edge compatible) */}
               {externalDoc && (
                 <a
                   href={externalDoc}
                   target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0c122e] hover:bg-[#151f4d] border border-slate-700 hover:border-slate-500 text-white font-display font-semibold text-xs tracking-wider transition-colors"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-display font-semibold text-xs tracking-wider border border-cyan-400/40 transition-all shadow-md active:scale-95"
                 >
-                  <FileText className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Open Document</span>
+                  <FileText className="w-3.5 h-3.5 text-cyan-200" />
+                  <span>Open Full PDF in New Tab</span>
+                  <ExternalLink className="w-3 h-3 text-cyan-200" />
                 </a>
               )}
 
@@ -145,8 +151,8 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificatio
                 <a
                   href={certification.credentialUrl}
                   target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-display font-semibold text-xs tracking-wider border border-cyan-400/40 transition-all shadow-md active:scale-95"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-display font-semibold text-xs tracking-wider border border-slate-700 transition-all shadow-md active:scale-95"
                 >
                   <span>Verify Credential</span>
                   <ExternalLink className="w-3.5 h-3.5 text-cyan-200" />

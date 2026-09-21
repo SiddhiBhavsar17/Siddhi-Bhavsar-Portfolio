@@ -38,6 +38,7 @@ export interface Certification {
   credentialId?: string;
   credentialUrl?: string;
   thumbnail: string;
+  previewUrl?: string;
   documentUrl?: string;
   skillsCovered: string[];
   featured: boolean;
