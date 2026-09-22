@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Trophy, 
@@ -23,8 +23,32 @@ import { CertificateModal } from './CertificateModal';
 export const Achievements: React.FC = () => {
   // Modal states
   const [selectedAchievementCert, setSelectedAchievementCert] = useState<Achievement | null>(null);
+  const [selectedFileIndex, setSelectedFileIndex] = useState<number>(0);
   const [mediaModalProject, setMediaModalProject] = useState<Project | null>(null);
   const [selectedCertModal, setSelectedCertModal] = useState<Certification | null>(null);
+
+  const handleOpenAchievementCert = (item: Achievement) => {
+    setSelectedAchievementCert(item);
+    setSelectedFileIndex(0);
+  };
+
+  const handleCloseAchievementCert = () => {
+    setSelectedAchievementCert(null);
+    setSelectedFileIndex(0);
+  };
+
+  // Keyboard accessibility: Escape to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleCloseAchievementCert();
+      }
+    };
+    if (selectedAchievementCert) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedAchievementCert]);
 
   // Retrieve Journey Bhai project data
   const journeyBhaiProject = projectsData.find((p) => p.id === 'journey-bhai') || projectsData[0];
@@ -140,21 +164,34 @@ export const Achievements: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="glass-panel glass-panel-hover rounded-2xl border border-cyan-500/40 hover:border-cyan-400/80 shadow-[0_0_30px_rgba(6,182,212,0.18)] hover:shadow-[0_0_36px_rgba(6,182,212,0.3)] flex flex-col justify-between overflow-hidden relative hud-corner group bg-[#090d26]/90 backdrop-blur-xl"
           >
-            {/* Top Label & Visual */}
+            {/* Top Label & Visual (Click to Enlarge) */}
             <div>
-              <div className="relative aspect-[16/9] bg-[#050818] overflow-hidden border-b border-slate-800/80 p-3 flex items-center justify-center">
+              <button
+                type="button"
+                onClick={() => setSelectedCertModal(aiEngineerCert)}
+                aria-label={`Enlarge original certificate: ${aiEngineerCert.name}`}
+                className="w-full text-left relative aspect-[16/9] bg-[#050818] overflow-hidden border-b border-slate-800/80 p-3 flex items-center justify-center cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-cyan-500/50 block"
+              >
                 <img
-                  src={aiEngineerCert.thumbnail}
-                  alt={aiEngineerCert.name}
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                  src={aiEngineerCert.previewUrl || aiEngineerCert.thumbnail}
+                  alt={`${aiEngineerCert.name} - Original Certificate`}
+                  className="w-full h-full object-contain group-hover/canvas:scale-105 transition-transform duration-500"
                 />
 
                 {/* Featured Badge */}
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg border border-cyan-300/40">
+                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg border border-cyan-300/40 pointer-events-none z-10">
                   <Crown className="w-3.5 h-3.5 text-amber-300" />
                   <span>Featured Certification</span>
                 </div>
-              </div>
+
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1px] pointer-events-none z-10">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/95 border border-cyan-400/50 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
+                    <Eye className="w-3.5 h-3.5 text-cyan-300" />
+                    <span>Click to enlarge certificate</span>
+                  </span>
+                </div>
+              </button>
 
               {/* Text Info */}
               <div className="p-6 space-y-3">
@@ -171,20 +208,6 @@ export const Achievements: React.FC = () => {
                 <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed">
                   Comprehensive artificial intelligence specialization covering foundational machine learning principles through modern deep architectures, LLM systems, and production engineering.
                 </p>
-              </div>
-            </div>
-
-            {/* Action Bar */}
-            <div className="p-6 pt-0 mt-2">
-              <div className="pt-4 border-t border-slate-800/80 flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setSelectedCertModal(aiEngineerCert)}
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-display tracking-wider text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border border-cyan-400/50 shadow-md transition-all active:scale-95"
-                >
-                  <Eye className="w-4 h-4 text-cyan-200" />
-                  <span>View Certificate</span>
-                </button>
               </div>
             </div>
           </motion.div>
@@ -243,21 +266,35 @@ export const Achievements: React.FC = () => {
                 className={`glass-panel glass-panel-hover rounded-2xl overflow-hidden border flex flex-col justify-between relative group hud-corner shadow-xl bg-[#090d26]/90 backdrop-blur-xl transition-all duration-300 ${cardBorder}`}
               >
                 <div>
-                  {/* Certificate / Credential Thumbnail Stage */}
-                  <div className="relative aspect-[16/10] bg-[#050818] overflow-hidden border-b border-slate-800/80 p-2.5 flex items-center justify-center">
+                  {/* Certificate / Credential Thumbnail Stage (Clickable to Enlarge) */}
+                  <button
+                    type="button"
+                    onClick={() => handleOpenAchievementCert(item)}
+                    aria-label={`Enlarge original certificate: ${item.title}`}
+                    className="w-full text-left relative aspect-[16/10] bg-[#050818] overflow-hidden border-b border-slate-800/80 p-2.5 flex items-center justify-center cursor-pointer group/thumb focus:outline-none focus:ring-2 focus:ring-amber-500/50 block"
+                  >
                     <img
                       src={item.thumbnail}
-                      alt={item.title}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 opacity-95 group-hover:opacity-100"
+                      alt={`${item.title} - Original Certificate / Proof`}
+                      loading="lazy"
+                      className="w-full h-full object-contain group-hover/thumb:scale-105 transition-transform duration-500 opacity-95 group-hover/thumb:opacity-100"
                     />
 
                     {/* Status Badge Tag on Card Top Right */}
-                    <div className="absolute top-3 right-3">
+                    <div className="absolute top-3 right-3 pointer-events-none z-10">
                       <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10.5px] font-mono font-bold tracking-wider uppercase border shadow-md ${statusBadgeStyle}`}>
                         {item.status}
                       </span>
                     </div>
-                  </div>
+
+                    {/* Hover Overlay: Click to Enlarge Original File */}
+                    <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1px] pointer-events-none z-10">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/95 border border-amber-400/50 shadow-xl transform translate-y-1 group-hover/thumb:translate-y-0 transition-transform">
+                        <Eye className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Click to enlarge certificate</span>
+                      </span>
+                    </div>
+                  </button>
 
                   {/* Card Content: Event -> Status -> Project */}
                   <div className="p-5 sm:p-6 space-y-3">
@@ -294,20 +331,6 @@ export const Achievements: React.FC = () => {
                     )}
                   </div>
                 </div>
-
-                {/* View Certificate Action Button */}
-                <div className="p-5 sm:p-6 pt-0 mt-2">
-                  <div className="pt-3 border-t border-slate-800/80">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedAchievementCert(item)}
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold font-display tracking-wider text-slate-200 bg-[#0c122e] hover:bg-[#131d47] border border-cyan-500/30 hover:border-cyan-400 transition-all shadow-sm active:scale-95 group/btn"
-                    >
-                      <Eye className="w-3.5 h-3.5 text-cyan-400 group-hover/btn:scale-110 transition-transform" />
-                      <span>View Certificate</span>
-                    </button>
-                  </div>
-                </div>
               </motion.div>
             );
           })}
@@ -318,91 +341,137 @@ export const Achievements: React.FC = () => {
       {/* ACHIEVEMENT CERTIFICATE MODAL / LIGHTBOX                                  */}
       {/* ========================================================================= */}
       <AnimatePresence>
-        {selectedAchievementCert && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md">
-            <div className="absolute inset-0" onClick={() => setSelectedAchievementCert(null)} />
+        {selectedAchievementCert && (() => {
+          const activeFile = selectedAchievementCert.files && selectedAchievementCert.files.length > 0
+            ? selectedAchievementCert.files[selectedFileIndex] || selectedAchievementCert.files[0]
+            : null;
+          const displayVisual = activeFile?.previewUrl || activeFile?.url || selectedAchievementCert.certificateUrl || selectedAchievementCert.thumbnail;
+          const documentLink = activeFile?.url || selectedAchievementCert.documentUrl;
+          const isPdf = activeFile?.type === 'pdf' || selectedAchievementCert.fileType === 'pdf' || documentLink?.endsWith('.pdf');
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              transition={{ duration: 0.25 }}
-              className="relative z-10 w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#080d24] border border-amber-500/40 shadow-[0_0_40px_rgba(245,158,11,0.25)] flex flex-col"
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/80 bg-[#060a1c]">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
-                    <Trophy className="w-5 h-5" />
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md">
+              <div className="absolute inset-0" onClick={handleCloseAchievementCert} />
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 12 }}
+                transition={{ duration: 0.25 }}
+                className="relative z-10 w-full max-w-4xl max-h-[94vh] overflow-y-auto rounded-2xl bg-[#080d24] border border-amber-500/40 shadow-[0_0_50px_rgba(245,158,11,0.25)] flex flex-col"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/80 bg-[#060a1c] sticky top-0 z-20">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
+                      <Trophy className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-xs font-mono uppercase tracking-wider text-amber-400 font-semibold block truncate">
+                        {selectedAchievementCert.status}
+                      </span>
+                      <h3 className="text-lg sm:text-xl font-display font-bold text-white tracking-wide truncate">
+                        {selectedAchievementCert.title}
+                      </h3>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-mono uppercase tracking-wider text-amber-400 font-semibold block truncate">
-                      {selectedAchievementCert.status}
-                    </span>
-                    <h3 className="text-lg sm:text-xl font-display font-bold text-white tracking-wide truncate">
-                      {selectedAchievementCert.title}
-                    </h3>
-                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleCloseAchievementCert}
+                    className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/80 flex-shrink-0 ml-3"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedAchievementCert(null)}
-                  className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/80 flex-shrink-0"
-                  aria-label="Close modal"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Certificate Lightbox Canvas */}
-              <div className="relative bg-[#040612] flex items-center justify-center min-h-[280px] sm:min-h-[380px] p-4 sm:p-6 overflow-hidden border-b border-slate-800/80">
-                <img
-                  src={selectedAchievementCert.certificateUrl || selectedAchievementCert.thumbnail}
-                  alt={selectedAchievementCert.title}
-                  className="max-h-[55vh] w-auto max-w-full rounded-xl border border-slate-800 shadow-2xl object-contain bg-[#070b1e]"
-                />
-              </div>
-
-              {/* Details Body */}
-              <div className="p-5 sm:p-6 space-y-3 bg-[#080d24]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#0a102c] border border-slate-800/90 text-xs">
-                  <div>
-                    <span className="text-slate-400 font-mono block mb-0.5">Event:</span>
-                    <span className="font-semibold text-white text-sm">{selectedAchievementCert.title}</span>
+                {/* Multiple Files Tab Bar (if achievement has > 1 file) */}
+                {selectedAchievementCert.files && selectedAchievementCert.files.length > 1 && (
+                  <div className="flex items-center gap-2 px-5 py-2.5 bg-[#070b1e] border-b border-slate-800/80 overflow-x-auto">
+                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider flex-shrink-0">
+                      Document Files:
+                    </span>
+                    {selectedAchievementCert.files.map((file, idx) => (
+                      <button
+                        key={file.id}
+                        type="button"
+                        onClick={() => setSelectedFileIndex(idx)}
+                        className={`px-3 py-1 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 flex-shrink-0 ${
+                          selectedFileIndex === idx
+                            ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                            : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                        }`}
+                      >
+                        <FileText className="w-3 h-3 text-amber-400" />
+                        <span>{file.name}</span>
+                      </button>
+                    ))}
                   </div>
-                  <div>
-                    <span className="text-slate-400 font-mono block mb-0.5">Status:</span>
-                    <span className="font-semibold text-amber-300 text-sm">{selectedAchievementCert.status}</span>
-                  </div>
-                  {selectedAchievementCert.project && (
-                    <div className="sm:col-span-2 pt-2 border-t border-slate-800/80">
-                      <span className="text-slate-400 font-mono block mb-0.5">Project:</span>
-                      <span className="font-semibold text-white text-sm">{selectedAchievementCert.project}</span>
+                )}
+
+                {/* Certificate Lightbox Canvas */}
+                <div className="relative bg-[#040612] flex items-center justify-center min-h-[300px] sm:min-h-[420px] p-4 sm:p-6 overflow-hidden border-b border-slate-800/80">
+                  <img
+                    src={displayVisual}
+                    alt={selectedAchievementCert.title}
+                    className="max-h-[62vh] w-auto max-w-full rounded-xl border border-slate-800 shadow-2xl object-contain bg-[#070b1e]"
+                  />
+                </div>
+
+                {/* Details Body */}
+                <div className="p-5 sm:p-6 space-y-3 bg-[#080d24]">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#0a102c] border border-slate-800/90 text-xs">
+                    <div>
+                      <span className="text-slate-400 font-mono block mb-0.5">Event:</span>
+                      <span className="font-semibold text-white text-sm">{selectedAchievementCert.title}</span>
                     </div>
+                    <div>
+                      <span className="text-slate-400 font-mono block mb-0.5">Status:</span>
+                      <span className="font-semibold text-amber-300 text-sm">{selectedAchievementCert.status}</span>
+                    </div>
+                    {selectedAchievementCert.project && (
+                      <div className="sm:col-span-2 pt-2 border-t border-slate-800/80">
+                        <span className="text-slate-400 font-mono block mb-0.5">Project:</span>
+                        <span className="font-semibold text-white text-sm">{selectedAchievementCert.project}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {selectedAchievementCert.description && (
+                    <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed">
+                      "{selectedAchievementCert.description}"
+                    </p>
                   )}
                 </div>
 
-                {selectedAchievementCert.description && (
-                  <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed">
-                    "{selectedAchievementCert.description}"
-                  </p>
-                )}
-              </div>
+                {/* Footer with Edge-Compatible Open Document Action */}
+                <div className="px-5 py-4 bg-[#060a1c] border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 sticky bottom-0 z-20">
+                  {documentLink ? (
+                    <a
+                      href={documentLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 hover:from-amber-500 hover:to-orange-500 text-white font-display font-semibold text-xs tracking-wider border border-amber-400/40 transition-all shadow-md active:scale-95"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-amber-200" />
+                      <span>{isPdf ? 'Open Full PDF in New Tab' : 'Open Full File in New Tab'}</span>
+                      <ExternalLink className="w-3 h-3 text-amber-200" />
+                    </a>
+                  ) : <div />}
 
-              {/* Footer */}
-              <div className="px-5 py-4 bg-[#060a1c] border-t border-slate-800/80 flex items-center justify-end">
-                <button
-                  type="button"
-                  onClick={() => setSelectedAchievementCert(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
+                  <button
+                    type="button"
+                    onClick={handleCloseAchievementCert}
+                    className="px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors ml-auto"
+                  >
+                    Close
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          );
+        })()}
       </AnimatePresence>
 
       {/* Reusable Project Media Modal for Journey Bhai */}

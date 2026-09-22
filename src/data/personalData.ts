@@ -52,7 +52,6 @@ export const personalData: PersonalData = {
   github: "https://github.com/SiddhiBhavsar17",
   linkedin: "https://www.linkedin.com/in/siddhi-bhavsar-187285309/",
   hackerrank: "https://www.hackerrank.com/profile/bhavsarsiddhi14",
-  leetcode: "https://leetcode.com/u/bhavsarsiddhi14/",
 
   // Path to your official resume PDF (exact active file in public/assets/resume/)
   resume: "/assets/resume/Siddhi_Bhavsar_2026_Latest_Resume2.1.pdf",

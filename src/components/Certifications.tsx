@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { 
   FileCheck, 
-  ChevronDown, 
-  ChevronUp, 
   Sparkles,
-  Crown,
   Maximize2
 } from 'lucide-react';
 import { certificationsData } from '../data/certifications';
@@ -13,13 +10,7 @@ import { Certification } from '../types';
 import { CertificateModal } from './CertificateModal';
 
 export const Certifications: React.FC = () => {
-  const [showAll, setShowAll] = useState(false);
   const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
-
-  // Top 3 featured certificates (strongest visual emphasis)
-  const featuredCertificates = certificationsData.slice(0, 3);
-  // Remaining 3 certificates for the expanded view
-  const remainingCertificates = certificationsData.slice(3);
 
   return (
     <section id="certifications" className="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -38,48 +29,49 @@ export const Certifications: React.FC = () => {
               Certifications
             </h2>
             <p className="text-xs text-slate-400 font-mono uppercase tracking-wider">
-              VERIFIED SPECIALIZATIONS &amp; BOOTCAMPS
+              VERIFIED SPECIALIZATIONS &amp; CREDENTIALS
             </p>
           </div>
         </div>
 
-        {/* Counter and Header Badge */}
+        {/* Counter Badge */}
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-mono text-cyan-300">
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-mono text-cyan-300">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{certificationsData.length} Credentials Available</span>
+            <span>{certificationsData.length} Verified Credentials</span>
           </div>
-
-          {/* Quick Header Toggle Button */}
-          <button
-            type="button"
-            onClick={() => setShowAll(!showAll)}
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-cyan-400 hover:text-cyan-300 font-mono transition-colors px-2 py-1 rounded-lg hover:bg-slate-900/60"
-          >
-            <span>{showAll ? 'Show Less ↑' : 'View All (6) →'}</span>
-          </button>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 1. TOP 3 FEATURED CERTIFICATES                                            */}
+      {/* ALL 6 CERTIFICATIONS DISPLAYED DIRECTLY (NO ACCORDION / NO HIDDEN CARDS) */}
       {/* ========================================================================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
-        {featuredCertificates.map((cert, index) => {
-          const isPrimary = index === 0;
-
-          // Subtle animated neon glow borders consistent with Projects and Skills
-          const cardBorder = isPrimary
-            ? 'border-purple-500/60 shadow-[0_0_28px_rgba(168,85,247,0.25)] hover:border-purple-400 hover:shadow-[0_0_36px_rgba(168,85,247,0.4)]'
+        {certificationsData.map((cert, index) => {
+          // Curated border accents for visual hierarchy
+          const cardBorder = index === 0
+            ? 'border-purple-500/60 shadow-[0_0_28px_rgba(168,85,247,0.2)] hover:border-purple-400 hover:shadow-[0_0_36px_rgba(168,85,247,0.35)]'
             : index === 1
-            ? 'border-cyan-500/50 shadow-[0_0_24px_rgba(6,182,212,0.2)] hover:border-cyan-400 hover:shadow-[0_0_32px_rgba(6,182,212,0.35)]'
-            : 'border-blue-500/50 shadow-[0_0_24px_rgba(59,130,246,0.2)] hover:border-blue-400 hover:shadow-[0_0_32px_rgba(59,130,246,0.35)]';
+            ? 'border-cyan-500/50 shadow-[0_0_24px_rgba(6,182,212,0.18)] hover:border-cyan-400 hover:shadow-[0_0_32px_rgba(6,182,212,0.3)]'
+            : index === 2
+            ? 'border-blue-500/50 shadow-[0_0_24px_rgba(59,130,246,0.18)] hover:border-blue-400 hover:shadow-[0_0_32px_rgba(59,130,246,0.3)]'
+            : index === 3
+            ? 'border-amber-500/50 shadow-[0_0_24px_rgba(245,158,11,0.18)] hover:border-amber-400 hover:shadow-[0_0_32px_rgba(245,158,11,0.3)]'
+            : index === 4
+            ? 'border-teal-500/50 shadow-[0_0_24px_rgba(20,184,166,0.18)] hover:border-teal-400 hover:shadow-[0_0_32px_rgba(20,184,166,0.3)]'
+            : 'border-indigo-500/50 shadow-[0_0_24px_rgba(99,102,241,0.18)] hover:border-indigo-400 hover:shadow-[0_0_32px_rgba(99,102,241,0.3)]';
 
-          const tagBadgeStyle = isPrimary
+          const tagBadgeStyle = index === 0
             ? 'bg-purple-950/80 border-purple-400/50 text-purple-300'
             : index === 1
             ? 'bg-cyan-950/80 border-cyan-400/50 text-cyan-300'
-            : 'bg-blue-950/80 border-blue-400/50 text-blue-300';
+            : index === 2
+            ? 'bg-blue-950/80 border-blue-400/50 text-blue-300'
+            : index === 3
+            ? 'bg-amber-950/80 border-amber-400/50 text-amber-300'
+            : index === 4
+            ? 'bg-teal-950/80 border-teal-400/50 text-teal-300'
+            : 'bg-indigo-950/80 border-indigo-400/50 text-indigo-300';
 
           return (
             <motion.div
@@ -87,46 +79,38 @@ export const Certifications: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: index * 0.12 }}
+              transition={{ duration: 0.45, delay: index * 0.08 }}
               className={`glass-panel glass-panel-hover rounded-2xl overflow-hidden border flex flex-col justify-between group hud-corner relative transition-all duration-300 bg-[#090d26]/90 backdrop-blur-xl ${cardBorder}`}
             >
               <div>
-                {/* Real Certificate Preview Canvas (Click to Enlarge) */}
+                {/* Real Certificate Preview Picture (Click/Touch to Enlarge) */}
                 <button
                   type="button"
                   onClick={() => setSelectedCert(cert)}
-                  aria-label={`Enlarge ${cert.name} certificate`}
-                  className="w-full text-left relative aspect-[16/11] bg-[#030614] overflow-hidden border-b border-slate-800/80 p-2 flex items-center justify-center cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                  aria-label={`Enlarge original certificate: ${cert.name}`}
+                  className="w-full text-left relative aspect-[16/11] bg-[#030614] overflow-hidden border-b border-slate-800/80 p-2 sm:p-2.5 flex items-center justify-center cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
                 >
                   <img
                     src={cert.previewUrl || cert.thumbnail}
-                    alt={cert.name}
+                    alt={`${cert.name} - Original Certificate`}
                     loading="lazy"
-                    className="w-full h-full object-contain rounded shadow-lg group-hover/canvas:scale-[1.03] transition-transform duration-300"
+                    className="w-full h-full object-contain rounded-lg shadow-lg group-hover/canvas:scale-[1.03] transition-transform duration-300"
                   />
-
-                  {/* Primary Featured Crown Badge on Certificate 1 */}
-                  {isPrimary && (
-                    <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg border border-pink-300/40 z-10">
-                      <Crown className="w-3 h-3 text-amber-300" />
-                      <span>Primary Featured</span>
-                    </div>
-                  )}
 
                   {/* Year Tag */}
                   {cert.year && (
-                    <div className="absolute top-3 right-3 z-10">
+                    <div className="absolute top-3 right-3 z-10 pointer-events-none">
                       <span className="px-2.5 py-0.5 rounded text-[10.5px] font-mono bg-slate-900/90 border border-slate-700 text-cyan-300 shadow">
                         {cert.year}
                       </span>
                     </div>
                   )}
 
-                  {/* Hover Overlay: Click to Enlarge Indicator */}
-                  <div className="absolute inset-0 bg-slate-950/45 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1.5px] z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/90 border border-cyan-400/50 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
+                  {/* Hover / Touch Indicator: Click to enlarge original certificate */}
+                  <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1px] z-10 pointer-events-none">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/95 border border-cyan-400/50 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
                       <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Click to enlarge</span>
+                      <span>Click to enlarge certificate</span>
                     </span>
                   </div>
                 </button>
@@ -137,11 +121,18 @@ export const Certifications: React.FC = () => {
                     {cert.issuer}
                   </span>
 
-                  <h3 className="text-lg sm:text-xl font-display font-bold text-white group-hover:text-cyan-200 transition-colors leading-snug">
+                  <h3 className="text-lg font-display font-bold text-white group-hover:text-cyan-200 transition-colors leading-snug">
                     {cert.name}
                   </h3>
 
-                  {/* Skills tags */}
+                  {/* Description / Summary */}
+                  {cert.description && (
+                    <p className="text-xs text-slate-300 font-light leading-relaxed line-clamp-2">
+                      {cert.description}
+                    </p>
+                  )}
+
+                  {/* Skills covered tags */}
                   {cert.skillsCovered && cert.skillsCovered.length > 0 && (
                     <div className="pt-1">
                       <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">
@@ -166,123 +157,7 @@ export const Certifications: React.FC = () => {
         })}
       </div>
 
-      {/* ========================================================================= */}
-      {/* 2. REMAINING 3 CERTIFICATES (Revealed on View All with Smooth Animation)  */}
-      {/* ========================================================================= */}
-      <AnimatePresence>
-        {showAll && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.45, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <div className="pt-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-                <span className="text-xs font-mono uppercase tracking-widest text-cyan-400 font-semibold px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30">
-                  Additional Verified Credentials
-                </span>
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
-                {remainingCertificates.map((cert, index) => (
-                  <motion.div
-                    key={cert.id}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.08 }}
-                    className="glass-panel glass-panel-hover rounded-2xl overflow-hidden border border-slate-800/90 hover:border-cyan-500/40 flex flex-col justify-between group hud-corner relative shadow-lg bg-[#080d24]/90 backdrop-blur-md hover:shadow-[0_0_24px_rgba(6,182,212,0.25)] transition-all duration-300"
-                  >
-                    <div>
-                      {/* Real Certificate Preview Canvas (Click to Enlarge) */}
-                      <button
-                        type="button"
-                        onClick={() => setSelectedCert(cert)}
-                        aria-label={`Enlarge ${cert.name} certificate`}
-                        className="w-full text-left relative aspect-[16/11] bg-[#030614] overflow-hidden border-b border-slate-800/80 p-2 flex items-center justify-center cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-                      >
-                        <img
-                          src={cert.previewUrl || cert.thumbnail}
-                          alt={cert.name}
-                          loading="lazy"
-                          className="w-full h-full object-contain rounded shadow-lg group-hover/canvas:scale-[1.03] transition-transform duration-300"
-                        />
-                        {cert.year && (
-                          <div className="absolute top-2 right-2 z-10">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-900/90 border border-slate-700 text-cyan-300 shadow">
-                              {cert.year}
-                            </span>
-                          </div>
-                        )}
-
-                        {/* Hover Overlay: Click to Enlarge Indicator */}
-                        <div className="absolute inset-0 bg-slate-950/45 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1.5px] z-10">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/90 border border-cyan-400/50 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
-                            <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>Click to enlarge</span>
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* Content */}
-                      <div className="p-5 space-y-2.5">
-                        <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-wide block font-medium">
-                          {cert.issuer}
-                        </span>
-
-                        <h3 className="text-base font-display font-bold text-white group-hover:text-cyan-200 transition-colors leading-snug">
-                          {cert.name}
-                        </h3>
-
-                        {cert.skillsCovered && cert.skillsCovered.length > 0 && (
-                          <div className="flex flex-wrap gap-1 pt-1">
-                            {cert.skillsCovered.slice(0, 3).map((skill) => (
-                              <span
-                                key={skill}
-                                className="px-2 py-0.5 rounded text-[9.5px] font-mono bg-[#0b1338] text-slate-300 border border-slate-800"
-                              >
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ========================================================================= */}
-      {/* 3. EXPAND / COLLAPSE BUTTON BAR                                           */}
-      {/* ========================================================================= */}
-      <div className="mt-10 flex justify-center">
-        <button
-          type="button"
-          onClick={() => setShowAll(!showAll)}
-          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-xs sm:text-sm font-semibold font-display tracking-wider text-white bg-gradient-to-r from-[#0c163b] via-[#101c4e] to-[#0c163b] hover:from-[#13225c] hover:to-[#13225c] border border-cyan-500/40 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.35)] transition-all duration-300 active:scale-95 group"
-        >
-          {showAll ? (
-            <>
-              <span>Show Less</span>
-              <ChevronUp className="w-4 h-4 text-cyan-400 group-hover:-translate-y-0.5 transition-transform" />
-            </>
-          ) : (
-            <>
-              <span>View All Certifications ({certificationsData.length})</span>
-              <ChevronDown className="w-4 h-4 text-cyan-400 group-hover:translate-y-0.5 transition-transform" />
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Data-Driven Certificate Modal / Lightbox */}
+      {/* Data-Driven Certificate Lightbox (Edge-Safe, Zero iframes) */}
       <CertificateModal
         certification={selectedCert}
         onClose={() => setSelectedCert(null)}

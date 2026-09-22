@@ -16,7 +16,7 @@ interface ContactProps {
   onOpenResume?: () => void;
 }
 
-// Custom crisp SVGs for HackerRank and LeetCode to ensure immediate recognition
+// Custom crisp SVG for HackerRank to ensure immediate recognition
 const HackerRankIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
   <svg 
     viewBox="0 0 24 24" 
@@ -25,17 +25,6 @@ const HackerRankIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5
     aria-hidden="true"
   >
     <path d="M12 0a12 12 0 0 0-1.748.127l.004.053c0 .034-.016.064-.047.078l-3.327 1.48a.105.105 0 0 0-.063.097v3.298c0 .041.025.078.063.095l3.327 1.48c.031.014.047.045.047.079v3.076c0 .043-.025.081-.064.098l-3.326 1.48a.105.105 0 0 0-.063.097v3.297c0 .042.025.08.063.096l3.327 1.48c.031.015.047.045.047.08v3.074c0 .042-.025.08-.064.098l-3.326 1.479a.105.105 0 0 0-.063.097v3.297c0 .043.025.08.063.097l3.327 1.48c.031.013.047.044.047.078v.047A12 12 0 1 0 12 0zm-1.89 4.331 1.89-.841 1.89.841v1.682l-1.89.841-1.89-.841zm0 6.183 1.89-.841 1.89.841v1.682l-1.89.841-1.89-.841zm0 6.183 1.89-.841 1.89.841v1.682l-1.89.841-1.89-.841z" />
-  </svg>
-);
-
-const LeetCodeIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
-  <svg 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    className={className}
-    aria-hidden="true"
-  >
-    <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.874 5.874 0 0 0 .349 1.017 5.938 5.938 0 0 0 4.818 3.593 5.49 5.49 0 0 0 1.978-.175 5.753 5.753 0 0 0 2.066-1.077l3.053-2.812a1.374 1.374 0 1 0-1.868-2.023l-3.05 2.808a3.003 3.003 0 0 1-1.082.563 2.74 2.74 0 0 1-.989.088 3.19 3.19 0 0 1-2.593-1.932 3.16 3.16 0 0 1-.188-.546 2.793 2.793 0 0 1-.033-1.196 2.83 2.83 0 0 1 .65-1.13l3.858-4.13 5.406-5.787a1.376 1.376 0 0 0-.968-2.32zm2.593 8.857a1.38 1.38 0 0 0-1.377 1.382v.004c0 .762.616 1.38 1.377 1.38h6.544a1.38 1.38 0 0 0 1.38-1.38v-.004a1.38 1.38 0 0 0-1.38-1.382z" />
   </svg>
 );
 
@@ -49,7 +38,7 @@ export const Contact: React.FC<ContactProps> = ({ onOpenResume }) => {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  // 6 Contact & Social Links in exact order
+  // Exactly 5 Contact & Social Links (LinkedIn, GitHub, Email, Resume, HackerRank)
   const contactLinks = [
     {
       name: "LinkedIn",
@@ -86,7 +75,7 @@ export const Contact: React.FC<ContactProps> = ({ onOpenResume }) => {
       name: "Resume",
       href: personalData.resume,
       icon: <FileDown className="w-6 h-6" />,
-      tag: "View & Download CV (PDF)",
+      tag: "View & Download CV",
       color: "purple",
       borderHover: "hover:border-purple-500/60 hover:shadow-[0_0_24px_rgba(168,85,247,0.25)]",
       iconBg: "bg-purple-500/10 border-purple-500/30 text-purple-400",
@@ -106,16 +95,6 @@ export const Contact: React.FC<ContactProps> = ({ onOpenResume }) => {
       color: "emerald",
       borderHover: "hover:border-emerald-500/60 hover:shadow-[0_0_24px_rgba(16,185,129,0.25)]",
       iconBg: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
-      isAction: false
-    },
-    {
-      name: "LeetCode",
-      href: personalData.leetcode || "https://leetcode.com/u/bhavsarsiddhi14/",
-      icon: <LeetCodeIcon className="w-6 h-6" />,
-      tag: "DSA & Coding Practice",
-      color: "amber",
-      borderHover: "hover:border-amber-500/60 hover:shadow-[0_0_24px_rgba(245,158,11,0.25)]",
-      iconBg: "bg-amber-500/10 border-amber-500/30 text-amber-400",
       isAction: false
     }
   ];
@@ -148,8 +127,8 @@ export const Contact: React.FC<ContactProps> = ({ onOpenResume }) => {
         </div>
       </div>
 
-      {/* Rebalanced 6 Contact Cards Grid (Neat 2x3 or 3x2, perfectly centered) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+      {/* Rebalanced 5 Contact Cards Grid (Neat 5-column on XL, 3 on LG, 2 on SM) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5">
         {contactLinks.map((item, index) => {
           const isButton = item.isAction && item.name === 'Resume';
 

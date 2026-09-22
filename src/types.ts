@@ -46,6 +46,15 @@ export interface Certification {
   description?: string;
 }
 
+export interface AchievementFile {
+  id: string;
+  name: string;
+  url: string;
+  type: 'image' | 'pdf';
+  previewUrl?: string;
+  isPrimary?: boolean;
+}
+
 export interface Achievement {
   id: string;
   title: string;
@@ -60,6 +69,8 @@ export interface Achievement {
   year?: string;
   highlight?: boolean;
   documentUrl?: string;
+  fileType?: 'image' | 'pdf';
+  files?: AchievementFile[];
   proofImage?: string;
 }
 
@@ -142,7 +153,6 @@ export interface PersonalData {
   linkedin: string;
   resume: string;
   hackerrank?: string;
-  leetcode?: string;
   footerQuote?: string;
   socials?: {
     github: string;
@@ -150,7 +160,6 @@ export interface PersonalData {
     email: string;
     twitter?: string;
     hackerrank?: string;
-    leetcode?: string;
   };
   profileImage: string;
   resumeUrl?: string;
