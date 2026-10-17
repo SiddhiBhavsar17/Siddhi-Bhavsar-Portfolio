@@ -15,8 +15,8 @@ export const personalData: PersonalData = {
   // Short/First Name (used in friendly greetings, e.g. "Hi! I'm Siddhi")
   shortName: "Siddhi",
 
-  // Current academic role/title (e.g. "B.Tech CSE Student")
-  title: "B.Tech CSE Student",
+  // Current professional headline / role
+  title: "AI/ML Developer | Computer Science Engineer",
 
   // University / College name
   college: "Pimpri Chinchwad University",

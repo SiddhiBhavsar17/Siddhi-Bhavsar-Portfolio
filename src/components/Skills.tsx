@@ -1,332 +1,595 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Settings, 
+  Sparkles, 
+  Brain, 
+  Code2, 
+  Layers, 
+  Wrench, 
   Database,
-  Brain,
+  Orbit,
+  Maximize2,
+  ChevronRight,
+  Info,
+  CheckCircle2,
   Zap,
-  Sparkles,
-  Layers,
-  Terminal,
-  FileCode,
-  Flame,
-  GitBranch,
-  Github,
-  Trello,
-  Workflow,
-  Atom,
-  Binary,
-  Cpu,
-  ChevronDown,
-  ChevronUp
+  Star
 } from 'lucide-react';
-import { skillsData, skillCategories, prioritySkillNames } from '../data/skills';
+import { skillsData, skillCategories } from '../data/skills';
+import { Skill } from '../types';
 
-// Color themes for the neon cards across Cyan, Blue, Purple, Pink, Magenta
-const neonBorderStyles: Record<string, {
-  border: string;
-  glow: string;
-  badge: string;
-}> = {
-  Cyan: {
-    border: 'border-cyan-500/40 hover:border-cyan-400',
-    glow: 'shadow-[0_0_15px_rgba(6,182,212,0.18)] hover:shadow-[0_0_22px_rgba(6,182,212,0.35)]',
-    badge: 'bg-cyan-950/60 text-cyan-300 border-cyan-500/30'
+// Coordinates (normalized 0-100%) for the Constellation Map
+interface ConstellationNode {
+  skill: Skill;
+  x: number;
+  y: number;
+  cluster: string;
+  color: string;
+  glowColor: string;
+  size: number;
+}
+
+// Cluster definitions with cosmic colors
+const clusterColors: Record<string, { main: string; glow: string; text: string; bg: string }> = {
+  "Siddhi's Specialty": {
+    main: '#fbbf24', // Amber/Gold
+    glow: 'rgba(251, 191, 36, 0.6)',
+    text: 'text-amber-300',
+    bg: 'bg-amber-500/20'
   },
-  Blue: {
-    border: 'border-blue-500/40 hover:border-blue-400',
-    glow: 'shadow-[0_0_15px_rgba(59,130,246,0.18)] hover:shadow-[0_0_22px_rgba(59,130,246,0.35)]',
-    badge: 'bg-blue-950/60 text-blue-300 border-blue-500/30'
+  "Languages": {
+    main: '#38bdf8', // Cyan
+    glow: 'rgba(56, 189, 248, 0.6)',
+    text: 'text-cyan-300',
+    bg: 'bg-cyan-500/20'
   },
-  Purple: {
-    border: 'border-purple-500/40 hover:border-purple-400',
-    glow: 'shadow-[0_0_15px_rgba(168,85,247,0.18)] hover:shadow-[0_0_22px_rgba(168,85,247,0.35)]',
-    badge: 'bg-purple-950/60 text-purple-300 border-purple-500/30'
+  "Development": {
+    main: '#c084fc', // Purple
+    glow: 'rgba(192, 132, 252, 0.6)',
+    text: 'text-purple-300',
+    bg: 'bg-purple-500/20'
   },
-  Pink: {
-    border: 'border-pink-500/40 hover:border-pink-400',
-    glow: 'shadow-[0_0_15px_rgba(236,72,153,0.18)] hover:shadow-[0_0_22px_rgba(236,72,153,0.35)]',
-    badge: 'bg-pink-950/60 text-pink-300 border-pink-500/30'
+  "Tools & Platforms": {
+    main: '#4ade80', // Emerald
+    glow: 'rgba(74, 222, 128, 0.6)',
+    text: 'text-emerald-300',
+    bg: 'bg-emerald-500/20'
   },
-  Magenta: {
-    border: 'border-fuchsia-500/40 hover:border-fuchsia-400',
-    glow: 'shadow-[0_0_15px_rgba(217,70,239,0.18)] hover:shadow-[0_0_22px_rgba(217,70,239,0.35)]',
-    badge: 'bg-fuchsia-950/60 text-fuchsia-300 border-fuchsia-500/30'
+  "Others": {
+    main: '#f472b6', // Pink / Data
+    glow: 'rgba(244, 114, 182, 0.6)',
+    text: 'text-pink-300',
+    bg: 'bg-pink-500/20'
   }
 };
 
-const colorPalette = ['Cyan', 'Blue', 'Purple', 'Pink', 'Magenta'] as const;
+// Constellation edges linking real skills
+const constellationEdges = [
+  // AI/ML Core Constellation (Amber)
+  ['Machine Learning', 'Deep Learning'],
+  ['Machine Learning', 'Generative AI'],
+  ['Machine Learning', 'OpenCV'],
+  ['Deep Learning', 'NLP'],
+  ['Generative AI', 'Python'],
+  ['Machine Learning', 'Python'],
 
-// Recognizable technology SVG icons & standard tech visuals
-const renderSkillIcon = (name: string) => {
-  switch (name) {
-    case 'Python':
-      return (
-        <svg className="w-5 h-5" viewBox="0 0 110 110" fill="none">
-          <path
-            d="M54.5 9.5C28.2 9.5 29.8 20.9 29.8 20.9L29.9 32.7H55.4V36.3H19.7C19.7 36.3 9.5 35.1 9.5 61.4C9.5 87.7 18.5 86.6 18.5 86.6H27.9V73.4C27.9 73.4 27.4 57.5 43.6 57.5H68.8C68.8 57.5 83.1 57.8 83.1 43.9V22.7C83.1 22.7 85.3 9.5 54.5 9.5ZM37.8 19.3C40.6 19.3 42.9 21.6 42.9 24.4C42.9 27.2 40.6 29.5 37.8 29.5C35 29.5 32.7 27.2 32.7 24.4C32.7 21.6 35 19.3 37.8 19.3Z"
-            fill="#3776AB"
-          />
-          <path
-            d="M55.5 100.5C81.8 100.5 80.2 89.1 80.2 89.1L80.1 77.3H54.6V73.7H90.3C90.3 73.7 100.5 74.9 100.5 48.6C100.5 22.3 91.5 23.4 91.5 23.4H82.1V36.6C82.1 36.6 82.6 52.5 66.4 52.5H41.2C41.2 52.5 26.9 52.2 26.9 66.1V87.3C26.9 87.3 24.7 100.5 55.5 100.5ZM72.2 90.7C69.4 90.7 67.1 88.4 67.1 85.6C67.1 82.8 69.4 80.5 72.2 80.5C75 80.5 77.3 82.8 77.3 85.6C77.3 88.4 75 90.7 72.2 90.7Z"
-            fill="#FFD43B"
-          />
-        </svg>
-      );
-    case 'Java':
-      return (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path fill="#EA2D2E" d="M8.86 16.38c-.37-.02-.73.01-1.07.08-1.57.32-2.14 1.55-.77 2.22 3.1 1.52 7.74.84 9.17-.45.47-.42.27-.85-.35-1.08-1.74-.65-4.88-.73-6.98-.77zm-1.84-2.85c-.32 0-.62.03-.9.08-1.72.33-2.02 1.43-.8 2.06 2.82 1.46 7.42 1.13 9.4-.19.64-.43.43-.87-.24-1.12-1.73-.65-5.26-.81-7.46-.83zm7.04-4.89c.35 1.13-.37 2.08-1.55 2.76.99-.44 1.94-.38 2.25.32.4 1.12-.55 2.5-2.22 3.29 2.54-.7 3.52-2.23 2.84-3.69-.5-1.08-1.82-1.63-1.32-2.68zm-4.32-.4c-.58 1.48-1.89 2.45-3.62 3.15 2.68-.61 4.74-1.77 5.24-3.32.32-1.01-.19-2.18-.89-3.23.08.97-.28 2.24-.73 3.4zM4.1 19.38c2.89.8 8.04.81 11.23.16 1.05-.21 1.76-.52 1.83-.86.06-.3-.39-.59-1.22-.8-.74-.19-1.8-.29-3.05-.3-4.14-.04-8.81.77-8.79 1.8z" />
-        </svg>
-      );
-    case 'C':
-      return (
-        <span className="font-mono font-black text-sm text-cyan-400 bg-cyan-950/60 px-1 rounded border border-cyan-500/40">
-          C
-        </span>
-      );
-    case 'C++':
-      return (
-        <span className="font-mono font-black text-xs text-blue-400 bg-blue-950/60 px-1 rounded border border-blue-500/40">
-          C++
-        </span>
-      );
-    case 'SQL':
-      return <Database className="w-5 h-5 text-amber-400" />;
-    case 'HTML':
-      return (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path fill="#E34F26" d="M1.5 0h21l-1.91 21.563L11.97 24l-8.59-2.438L1.5 0zm17.09 4.413H5.41l.36 4.09h11.45l-.41 4.542-4.84 1.343-4.84-1.343-.27-3.09H2.81l.52 5.92 8.64 2.4 8.64-2.4 1.18-13.462z" />
-        </svg>
-      );
-    case 'CSS':
-      return (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path fill="#1572B6" d="M1.5 0h21l-1.91 21.563L11.97 24l-8.59-2.438L1.5 0zm17.09 4.413H5.41l.36 4.09h11.45l-.41 4.542-4.84 1.343-4.84-1.343-.27-3.09H2.81l.52 5.92 8.64 2.4 8.64-2.4 1.18-13.462z" />
-        </svg>
-      );
-    case 'JavaScript':
-      return (
-        <span className="font-mono font-black text-xs text-amber-300 bg-amber-950/80 px-1 rounded border border-amber-500/50">
-          JS
-        </span>
-      );
+  // Languages Constellation (Cyan)
+  ['Python', 'C++'],
+  ['Python', 'SQL'],
+  ['C++', 'C'],
+  ['C++', 'Java'],
+  ['JavaScript', 'HTML'],
+  ['HTML', 'CSS'],
+  ['JavaScript', 'React'],
 
-    // Siddhi's Specialty
-    case 'Machine Learning':
-      return <Brain className="w-5 h-5 text-purple-400" />;
-    case 'Deep Learning':
-      return <Binary className="w-5 h-5 text-pink-400" />;
-    case 'Generative AI':
-      return <Sparkles className="w-5 h-5 text-cyan-300" />;
-    case 'OpenCV':
-      return <Cpu className="w-5 h-5 text-emerald-400" />;
-    case 'NLP':
-      return <Workflow className="w-5 h-5 text-fuchsia-400" />;
+  // Development Constellation (Purple)
+  ['Python', 'FastAPI'],
+  ['FastAPI', 'Django'],
+  ['FastAPI', 'Streamlit'],
+  ['React', 'Angular'],
+  ['React', 'FastAPI'],
 
-    // Development
-    case 'React':
-      return <Atom className="w-5 h-5 text-cyan-400 animate-[spin_10s_linear_infinite]" />;
-    case 'Angular':
-      return (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path fill="#DD0031" d="M12 2.5L2.6 5.8l1.4 12.3 8 4.4 8-4.4 1.4-12.3L12 2.5zm0 2.8l6.3 2.2-1 8.8-5.3 2.9-5.3-2.9-1-8.8 6.3-2.2zm0 3.2L8.2 16h1.9l.8-2h4.2l.8 2h1.9L12 8.5zm-1.1 4.1l1.1-2.8 1.1 2.8h-2.2z" />
-        </svg>
-      );
-    case 'Django':
-      return <FileCode className="w-5 h-5 text-emerald-400" />;
-    case 'FastAPI':
-      return <Zap className="w-5 h-5 text-teal-300" />;
-    case 'Streamlit':
-      return <Flame className="w-5 h-5 text-red-400" />;
+  // Tools Constellation (Emerald)
+  ['Git', 'GitHub'],
+  ['Git', 'Linux'],
+  ['GitHub', 'Agile'],
+  ['Jira', 'Agile'],
+  ['Figma', 'React'],
 
-    // Tools & Platforms
-    case 'Git':
-      return <GitBranch className="w-5 h-5 text-orange-400" />;
-    case 'GitHub':
-      return <Github className="w-5 h-5 text-slate-200" />;
-    case 'Linux':
-      return <Terminal className="w-5 h-5 text-amber-300" />;
-    case 'Figma':
-      return <Layers className="w-5 h-5 text-violet-400" />;
-    case 'Jira':
-      return <Trello className="w-5 h-5 text-blue-400" />;
-    case 'Agile':
-      return <Workflow className="w-5 h-5 text-cyan-400" />;
-
-    // Others
-    case 'MySQL':
-      return <Database className="w-5 h-5 text-blue-400" />;
-    case 'NumPy':
-      return (
-        <span className="font-mono font-bold text-xs text-indigo-300 bg-indigo-950/60 px-1 rounded border border-indigo-500/40">
-          NP
-        </span>
-      );
-    case 'Pandas':
-      return (
-        <span className="font-mono font-bold text-xs text-rose-300 bg-rose-950/60 px-1 rounded border border-rose-500/40">
-          PD
-        </span>
-      );
-
-    default:
-      return <Cpu className="w-5 h-5 text-cyan-400" />;
-  }
-};
+  // Data Science Constellation (Pink)
+  ['Python', 'NumPy'],
+  ['NumPy', 'Pandas'],
+  ['Pandas', 'MySQL'],
+  ['SQL', 'MySQL'],
+];
 
 export const Skills: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>('All');
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [selectedSkill, setSelectedSkill] = useState<Skill | null>(() => {
+    return skillsData.find(s => s.name === 'Machine Learning') || skillsData[0];
+  });
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'constellation' | 'grid'>('constellation');
 
-  // Filter skills by selected category
-  const categorySkills = activeTab === 'All' 
-    ? skillsData 
-    : skillsData.filter((s) => s.category === activeTab);
+  // Curated 2D coordinates for celestial star placement
+  const constellationNodes: ConstellationNode[] = useMemo(() => {
+    const coordsMap: Record<string, { x: number; y: number }> = {
+      // AI/ML Specialty (Center Hub - Amber)
+      'Machine Learning': { x: 50, y: 45 },
+      'Deep Learning': { x: 44, y: 32 },
+      'Generative AI': { x: 57, y: 33 },
+      'OpenCV': { x: 40, y: 52 },
+      'NLP': { x: 58, y: 50 },
 
-  // When in 'All' category and collapsed, show only the curated 10 priority skills
-  // In specific categories, if there are more than 8, respect expansion as well
-  const displayedSkills = isExpanded
-    ? categorySkills
-    : activeTab === 'All'
-      ? categorySkills.filter((s) => prioritySkillNames.includes(s.name))
-      : categorySkills;
+      // Languages (Left & Upper Orbit - Cyan)
+      'Python': { x: 50, y: 22 },
+      'C++': { x: 33, y: 20 },
+      'Java': { x: 22, y: 28 },
+      'C': { x: 24, y: 15 },
+      'SQL': { x: 36, y: 35 },
+      'JavaScript': { x: 20, y: 44 },
+      'HTML': { x: 14, y: 55 },
+      'CSS': { x: 12, y: 66 },
 
-  const hasMoreToToggle = activeTab === 'All' && categorySkills.length > displayedSkills.length;
+      // Development (Right & Lower Right - Purple)
+      'React': { x: 70, y: 38 },
+      'FastAPI': { x: 67, y: 22 },
+      'Django': { x: 80, y: 26 },
+      'Streamlit': { x: 82, y: 38 },
+      'Angular': { x: 84, y: 50 },
+
+      // Tools & Platforms (Lower Center / Left - Emerald)
+      'Git': { x: 32, y: 68 },
+      'GitHub': { x: 42, y: 74 },
+      'Linux': { x: 25, y: 80 },
+      'Agile': { x: 52, y: 82 },
+      'Jira': { x: 60, y: 88 },
+      'Figma': { x: 74, y: 72 },
+
+      // Others / Data (Lower Right - Pink)
+      'NumPy': { x: 64, y: 60 },
+      'Pandas': { x: 74, y: 60 },
+      'MySQL': { x: 50, y: 64 },
+    };
+
+    return skillsData.map((skill) => {
+      const pos = coordsMap[skill.name] || {
+        x: 20 + Math.random() * 60,
+        y: 20 + Math.random() * 60
+      };
+      const colors = clusterColors[skill.category] || clusterColors['Languages'];
+      const isCore = skill.category === "Siddhi's Specialty";
+
+      return {
+        skill,
+        x: pos.x,
+        y: pos.y,
+        cluster: skill.category,
+        color: colors.main,
+        glowColor: colors.glow,
+        size: isCore ? 14 : skill.highlight ? 10 : 8
+      };
+    });
+  }, []);
+
+  // Filter nodes according to selected category
+  const filteredNodes = useMemo(() => {
+    if (activeCategory === 'All') return constellationNodes;
+    return constellationNodes.filter(n => n.cluster === activeCategory);
+  }, [activeCategory, constellationNodes]);
+
+  // Active skill info
+  const activeNode = useMemo(() => {
+    const currentName = hoveredSkill || (selectedSkill ? selectedSkill.name : null);
+    if (!currentName) return null;
+    return constellationNodes.find(n => n.skill.name === currentName) || null;
+  }, [hoveredSkill, selectedSkill, constellationNodes]);
+
+  // Highlighted edges connected to hovered or selected node
+  const activeEdges = useMemo(() => {
+    const activeName = hoveredSkill || (selectedSkill ? selectedSkill.name : null);
+    if (!activeName) return new Set<string>();
+
+    const connected = new Set<string>();
+    const activeCluster = activeCategory !== 'All' ? activeCategory : null;
+
+    constellationEdges.forEach(([from, to]) => {
+      if (from === activeName || to === activeName) {
+        connected.add(`${from}---${to}`);
+        connected.add(`${to}---${from}`);
+      }
+    });
+    return connected;
+  }, [hoveredSkill, selectedSkill, activeCategory]);
 
   return (
-    <section id="skills" className="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      
-      {/* Section Header with Gear icon - Clean focus on Skills & Category filters */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-800/80">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-            <Settings className="w-5 h-5" />
+    <section id="skills" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* Background Starry Aura */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-purple-900/10 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      {/* Section Header with Refined Cosmic Hierarchy */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pb-5 border-b border-slate-800/80">
+        <div>
+          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.25em] text-amber-400 mb-2">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>AI/ML TECHNICAL UNIVERSE</span>
           </div>
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
-              Skills
-            </h2>
-            <p className="text-xs text-slate-400 font-mono uppercase tracking-wider">
-              LANGUAGES • SIDDHI&apos;S SPECIALTY • DEVELOPMENT • TOOLS
-            </p>
-          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight">
+            Skills Constellation
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono tracking-wide mt-1">
+            An interactive celestial star map connecting technical capabilities, AI algorithms, and development toolkits.
+          </p>
         </div>
 
-        {/* Category Filter Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          {skillCategories.map((cat) => {
-            const isActive = activeTab === cat;
-            const isSpecialty = cat === "Siddhi's Specialty";
+        {/* View Mode Toggle: Interactive Constellation vs Celestial Grid */}
+        <div className="flex items-center gap-2 p-1 rounded-full bg-[#080d26] border border-slate-800 self-start md:self-auto">
+          <button
+            type="button"
+            onClick={() => setViewMode('constellation')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all cursor-pointer ${
+              viewMode === 'constellation'
+                ? 'bg-amber-400 text-slate-950 font-bold shadow-[0_0_15px_rgba(251,191,36,0.4)]'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Orbit className="w-3.5 h-3.5" />
+            <span>Constellation</span>
+          </button>
 
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => {
-                  setActiveTab(cat);
-                  // Keep state predictable when switching categories
-                }}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all ${
-                  isActive
-                    ? isSpecialty
-                      ? 'bg-purple-500/25 text-purple-200 border border-purple-400/70 shadow-[0_0_15px_rgba(168,85,247,0.35)] font-semibold'
-                      : 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-[0_0_12px_rgba(56,189,248,0.25)] font-semibold'
-                    : 'bg-[#090e24]/80 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700'
-                }`}
-              >
-                <span>{cat}</span>
-              </button>
-            );
-          })}
+          <button
+            type="button"
+            onClick={() => setViewMode('grid')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all cursor-pointer ${
+              viewMode === 'grid'
+                ? 'bg-purple-600 text-white font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)]'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Grid Cards</span>
+          </button>
         </div>
       </div>
 
-      {/* 
-        Expanded Full-Width Responsive Grid:
-        - Desktop: 5-6 columns
-        - Tablet / Medium: 3-4 columns
-        - Mobile: 2 columns
-      */}
-      <motion.div 
-        layout
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"
-      >
-        <AnimatePresence>
-          {displayedSkills.map((skill, index) => {
-            // Assign cycling neon theme from the futuristic palette
-            const themeKey = colorPalette[index % colorPalette.length];
-            const theme = neonBorderStyles[themeKey];
+      {/* Constellation Category Filter Pills */}
+      <div className="flex flex-wrap items-center gap-2 mb-8">
+        {skillCategories.map((cat) => {
+          const isActive = activeCategory === cat;
+          const colors = clusterColors[cat] || clusterColors['Languages'];
+          const isSpecialty = cat === "Siddhi's Specialty";
 
-            return (
-              <motion.div
-                key={skill.id}
-                layout
-                initial={{ opacity: 0, scale: 0.94 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.94 }}
-                transition={{ duration: 0.25 }}
-                className={`group relative p-4 rounded-2xl bg-[#080d24]/90 backdrop-blur-sm border transition-all duration-300 flex flex-col justify-between cursor-default ${theme.border} ${theme.glow}`}
-              >
-                {/* Gentle Pulsing Neon Border Layer */}
-                <motion.div
-                  animate={{ opacity: [0.35, 0.7, 0.35] }}
-                  transition={{ 
-                    duration: 3.5 + (index % 3), 
-                    repeat: Infinity, 
-                    ease: 'easeInOut',
-                    delay: (index % 5) * 0.4
-                  }}
-                  className="absolute -inset-[1px] rounded-2xl pointer-events-none -z-10 bg-gradient-to-tr from-cyan-500/10 via-purple-500/10 to-pink-500/10 blur-sm"
-                />
+          return (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setActiveCategory(cat)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all cursor-pointer ${
+                isActive
+                  ? isSpecialty
+                    ? 'bg-amber-400 text-slate-950 font-bold border border-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.5)]'
+                    : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold border border-purple-400/60 shadow-[0_0_15px_rgba(168,85,247,0.35)]'
+                  : 'bg-[#060a1e]/90 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700'
+              }`}
+            >
+              <span>{cat}</span>
+            </button>
+          );
+        })}
+      </div>
 
-                {/* Card Top: Skill Icon and Ambient Halo */}
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-900/90 border border-slate-800/90 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:border-cyan-500/40 transition-all shadow-inner">
-                    {renderSkillIcon(skill.name)}
+      {/* ========================================================================= */}
+      {/* MAIN VIEW: INTERACTIVE CONSTELLATION MAP                                  */}
+      {/* ========================================================================= */}
+      {viewMode === 'constellation' ? (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          {/* Interactive Constellation Visualizer Canvas (8 cols on Desktop) */}
+          <div className="lg:col-span-8 relative w-full h-[460px] sm:h-[540px] md:h-[600px] rounded-2xl bg-gradient-to-b from-[#06091d]/95 via-[#030614]/95 to-[#02040d]/95 border border-purple-500/30 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.8)] select-none">
+            
+            {/* Background Starlight & Grid lines */}
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full border border-amber-400/10 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-purple-500/10 border-dashed pointer-events-none" />
+
+            {/* SVG Constellation Lines */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+              <defs>
+                <linearGradient id="edgeGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#c084fc" stopOpacity="0.8" />
+                </linearGradient>
+                <linearGradient id="edgeCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.5" />
+                </linearGradient>
+              </defs>
+
+              {constellationEdges.map(([fromName, toName], idx) => {
+                const nodeA = constellationNodes.find(n => n.skill.name === fromName);
+                const nodeB = constellationNodes.find(n => n.skill.name === toName);
+                if (!nodeA || !nodeB) return null;
+
+                const isEdgeActive = activeEdges.has(`${fromName}---${toName}`);
+                const isClusterMatch = activeCategory === 'All' || 
+                  (nodeA.cluster === activeCategory && nodeB.cluster === activeCategory);
+
+                return (
+                  <line
+                    key={`edge-${fromName}-${toName}-${idx}`}
+                    x1={`${nodeA.x}%`}
+                    y1={`${nodeA.y}%`}
+                    x2={`${nodeB.x}%`}
+                    y2={`${nodeB.y}%`}
+                    stroke={
+                      isEdgeActive 
+                        ? '#fbbf24' 
+                        : isClusterMatch 
+                          ? 'rgba(168, 85, 247, 0.35)' 
+                          : 'rgba(255, 255, 255, 0.08)'
+                    }
+                    strokeWidth={isEdgeActive ? '2.5' : isClusterMatch ? '1.2' : '0.6'}
+                    strokeDasharray={isEdgeActive ? 'none' : isClusterMatch ? 'none' : '3 6'}
+                    className="transition-all duration-300"
+                  />
+                );
+              })}
+            </svg>
+
+            {/* Interactive Celestial Star Nodes */}
+            <div className="absolute inset-0 z-20">
+              {constellationNodes.map((node) => {
+                const isSelected = selectedSkill?.name === node.skill.name;
+                const isHovered = hoveredSkill === node.skill.name;
+                const isFiltered = activeCategory === 'All' || node.cluster === activeCategory;
+                const isCore = node.cluster === "Siddhi's Specialty";
+
+                return (
+                  <div
+                    key={node.skill.id}
+                    style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                    className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300 group ${
+                      isFiltered ? 'opacity-100 scale-100' : 'opacity-25 scale-75'
+                    }`}
+                    onClick={() => setSelectedSkill(node.skill)}
+                    onMouseEnter={() => setHoveredSkill(node.skill.name)}
+                    onMouseLeave={() => setHoveredSkill(null)}
+                  >
+                    {/* Pulsing halo for active/hovered/core node */}
+                    {(isSelected || isHovered || isCore) && (
+                      <div
+                        className="absolute inset-0 rounded-full animate-ping pointer-events-none"
+                        style={{
+                          backgroundColor: node.color,
+                          opacity: isSelected || isHovered ? 0.45 : 0.15,
+                          transform: 'scale(2.2)'
+                        }}
+                      />
+                    )}
+
+                    {/* Outer Star Ring */}
+                    <div
+                      className={`relative flex items-center justify-center rounded-full transition-transform duration-300 ${
+                        isSelected || isHovered ? 'scale-125' : 'group-hover:scale-110'
+                      }`}
+                      style={{
+                        width: `${node.size * 2.2}px`,
+                        height: `${node.size * 2.2}px`,
+                        backgroundColor: '#030614',
+                        border: `2px solid ${isSelected || isHovered ? '#ffffff' : node.color}`,
+                        boxShadow: isSelected || isHovered
+                          ? `0 0 25px ${node.color}, inset 0 0 8px ${node.color}`
+                          : `0 0 10px ${node.glowColor}`
+                      }}
+                    >
+                      {/* Inner glowing celestial core */}
+                      <div
+                        className="rounded-full"
+                        style={{
+                          width: `${node.size}px`,
+                          height: `${node.size}px`,
+                          backgroundColor: node.color
+                        }}
+                      />
+                    </div>
+
+                    {/* Star Label */}
+                    <span
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-mono tracking-wider whitespace-nowrap pointer-events-none transition-all ${
+                        isSelected || isHovered
+                          ? 'bg-slate-950/95 text-amber-300 border border-amber-400 font-bold shadow-lg z-30 scale-105'
+                          : isCore
+                            ? 'bg-[#080d26]/85 text-amber-200/90 border border-amber-500/30'
+                            : 'bg-[#080d26]/75 text-slate-300 border border-slate-800'
+                      }`}
+                    >
+                      {node.skill.name}
+                    </span>
                   </div>
+                );
+              })}
+            </div>
 
-                  {/* Subtle category dot indicator */}
-                  <span className="w-2 h-2 rounded-full bg-cyan-400/60 group-hover:bg-cyan-300 transition-colors" />
-                </div>
+            {/* Bottom Constellation Legend */}
+            <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-4 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+              <div className="flex items-center gap-3 px-3 py-1.5 rounded-full bg-slate-950/85 border border-slate-800 backdrop-blur-md text-[10px] font-mono text-slate-300">
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <span>AI/ML Core</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                  <span>Languages</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-purple-400" />
+                  <span>Dev</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <span>Tools</span>
+                </span>
+              </div>
 
-                {/* Card Content: Skill Name & Category Label */}
-                <div className="space-y-1 mt-1">
-                  <h4 className="text-sm font-display font-bold text-white tracking-wide truncate group-hover:text-cyan-200 transition-colors">
-                    {skill.name}
-                  </h4>
-                  <span className={`inline-block text-[10.5px] font-mono px-2 py-0.5 rounded-md border truncate max-w-full ${theme.badge}`}>
-                    {skill.category}
+              <div className="text-[10px] font-mono text-slate-400 bg-slate-950/85 px-3 py-1.5 rounded-full border border-slate-800">
+                Click any star to inspect node
+              </div>
+            </div>
+          </div>
+
+          {/* Celestial Inspector HUD Panel (4 cols on Desktop) */}
+          <div className="lg:col-span-4 space-y-4">
+            {activeNode ? (
+              <motion.div
+                key={activeNode.skill.id}
+                initial={{ opacity: 0, x: 15 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4 }}
+                className="rounded-2xl p-6 bg-gradient-to-b from-[#0c0d2e]/95 via-[#080c24]/95 to-[#040614]/95 border border-amber-400/40 shadow-[0_8px_30px_rgba(251,191,36,0.15)] backdrop-blur-xl"
+              >
+                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+                  <div className="flex items-center gap-2 text-xs font-mono text-amber-300 uppercase tracking-widest">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>STAR NODE INSPECTOR</span>
+                  </div>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40">
+                    {activeNode.cluster}
                   </span>
                 </div>
+
+                <div className="mt-5 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg border"
+                      style={{
+                        backgroundColor: '#0a0f2e',
+                        borderColor: activeNode.color,
+                        boxShadow: `0 0 20px ${activeNode.glowColor}`
+                      }}
+                    >
+                      <Brain className="w-6 h-6" style={{ color: activeNode.color }} />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-display font-extrabold text-white tracking-wide">
+                        {activeNode.skill.name}
+                      </h3>
+                      <p className="text-xs font-mono text-slate-400">
+                        {activeNode.skill.highlight ? '✦ Flagship Core Skill' : '✦ Core Proficiency'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-slate-300 leading-relaxed font-light">
+                    {activeNode.skill.description}
+                  </p>
+
+                  {/* Connected Constellation Neighbors */}
+                  <div className="pt-3 border-t border-slate-800">
+                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block mb-2 font-medium">
+                      Connected Constellation Stars:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {constellationEdges
+                        .filter(([a, b]) => a === activeNode.skill.name || b === activeNode.skill.name)
+                        .map(([a, b]) => {
+                          const neighborName = a === activeNode.skill.name ? b : a;
+                          return (
+                            <button
+                              key={neighborName}
+                              type="button"
+                              onClick={() => {
+                                const target = skillsData.find(s => s.name === neighborName);
+                                if (target) setSelectedSkill(target);
+                              }}
+                              className="px-2.5 py-1 rounded-lg text-xs font-mono bg-[#0e163d] hover:bg-amber-400/20 text-slate-200 hover:text-amber-300 border border-slate-700 hover:border-amber-400/50 transition-all cursor-pointer flex items-center gap-1"
+                            >
+                              <span>{neighborName}</span>
+                              <ChevronRight className="w-3 h-3 text-slate-500" />
+                            </button>
+                          );
+                        })}
+                    </div>
+                  </div>
+
+                  {/* Related Projects Anchor */}
+                  <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                    <span className="text-xs font-mono text-slate-400">Featured in Project:</span>
+                    <a
+                      href="#projects"
+                      className="text-xs font-mono font-semibold text-amber-300 hover:text-amber-200 flex items-center gap-1"
+                    >
+                      <span>Journey Bhai</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
               </motion.div>
+            ) : null}
+
+            {/* Quick Constellation Metrics Card */}
+            <div className="rounded-2xl p-5 bg-[#070a1e]/80 border border-slate-800 text-xs font-mono space-y-2.5">
+              <div className="flex items-center justify-between text-slate-400">
+                <span>Total Cataloged Skills:</span>
+                <span className="text-white font-bold">{skillsData.length} Skills</span>
+              </div>
+              <div className="flex items-center justify-between text-slate-400">
+                <span>Specialty Focus:</span>
+                <span className="text-amber-300 font-bold">AI/ML & GenAI</span>
+              </div>
+              <div className="flex items-center justify-between text-slate-400">
+                <span>Constellation Links:</span>
+                <span className="text-cyan-300 font-bold">{constellationEdges.length} Pathways</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* ========================================================================= */
+        /* ALTERNATIVE VIEW: CELESTIAL GRID CARDS                                    */
+        /* ========================================================================= */
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+          {filteredNodes.map((node) => {
+            const isCore = node.cluster === "Siddhi's Specialty";
+            return (
+              <div
+                key={node.skill.id}
+                onClick={() => {
+                  setSelectedSkill(node.skill);
+                  setViewMode('constellation');
+                }}
+                className={`p-4 rounded-xl border transition-all cursor-pointer group flex flex-col justify-between ${
+                  isCore
+                    ? 'bg-gradient-to-b from-[#14123d] to-[#070b24] border-amber-400/50 hover:border-amber-300 shadow-[0_0_15px_rgba(251,191,36,0.15)]'
+                    : 'bg-[#080d26]/80 border-slate-800 hover:border-purple-400/50'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span
+                      className="w-2.5 h-2.5 rounded-full"
+                      style={{ backgroundColor: node.color }}
+                    />
+                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">
+                      {node.cluster.replace("Siddhi's ", '')}
+                    </span>
+                  </div>
+                  <h4 className="text-sm font-display font-bold text-white group-hover:text-amber-300 transition-colors">
+                    {node.skill.name}
+                  </h4>
+                  <p className="text-[11px] text-slate-400 line-clamp-2 mt-1 leading-snug">
+                    {node.skill.description}
+                  </p>
+                </div>
+
+                <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                  <span>Inspect Star</span>
+                  <ChevronRight className="w-3 h-3 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
             );
           })}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Prominent "See More Skills" / "Show Less" Button */}
-      {(hasMoreToToggle || isExpanded) && (
-        <motion.div 
-          layout
-          className="mt-8 flex flex-col items-center justify-center"
-        >
-          <button
-            type="button"
-            id="toggle-more-skills-btn"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="group relative inline-flex items-center justify-center gap-2.5 px-7 py-3 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-white bg-gradient-to-r from-cyan-950/90 via-indigo-950/90 to-purple-950/90 hover:from-cyan-900/90 hover:to-purple-900/90 border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_18px_rgba(6,182,212,0.25)] hover:shadow-[0_0_26px_rgba(6,182,212,0.45)] active:scale-95 transition-all"
-          >
-            <span>{isExpanded ? "Show Less" : "See More Skills"}</span>
-            {isExpanded ? (
-              <ChevronUp className="w-4 h-4 text-cyan-300 group-hover:-translate-y-0.5 transition-transform" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-cyan-300 group-hover:translate-y-0.5 transition-transform" />
-            )}
-          </button>
-        </motion.div>
+        </div>
       )}
-
     </section>
   );
 };

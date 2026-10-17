@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   FileCheck, 
-  Sparkles,
-  Maximize2
+  Sparkles, 
+  Maximize2,
+  ExternalLink,
+  Award
 } from 'lucide-react';
 import { certificationsData } from '../data/certifications';
 import { Certification } from '../types';
@@ -13,136 +15,107 @@ export const Certifications: React.FC = () => {
   const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
 
   return (
-    <section id="certifications" className="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      
+    <section id="certifications" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Background ambient lighting accent */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      {/* Section Header */}
-      <div className="flex items-center justify-between gap-4 mb-10 pb-4 border-b border-slate-800/80">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-            <FileCheck className="w-5 h-5" />
+      {/* Section Header with Refined Cosmic Hierarchy */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12 pb-5 border-b border-slate-800/80">
+        <div>
+          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.25em] text-amber-400 mb-2">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>VERIFIED ACADEMIC & INDUSTRY CREDENTIALS</span>
           </div>
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
-              Certifications
-            </h2>
-            <p className="text-xs text-slate-400 font-mono uppercase tracking-wider">
-              VERIFIED SPECIALIZATIONS &amp; CREDENTIALS
-            </p>
-          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight">
+            Certifications
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono tracking-wide mt-1">
+            Rigorous programs in AI Engineering, Machine Learning, Data Analytics, and Software Architecture.
+          </p>
         </div>
 
         {/* Counter Badge */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-mono text-cyan-300">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{certificationsData.length} Verified Credentials</span>
-          </div>
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0a0e29] border border-amber-400/30 text-xs font-mono text-amber-300">
+          <Award className="w-3.5 h-3.5 text-amber-400" />
+          <span>{certificationsData.length} Verified Credentials</span>
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* ALL 6 CERTIFICATIONS DISPLAYED DIRECTLY (NO ACCORDION / NO HIDDEN CARDS) */}
-      {/* ========================================================================= */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
+      {/* All 6 Certifications Displayed in Refined Cosmic Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
         {certificationsData.map((cert, index) => {
-          // Curated border accents for visual hierarchy
-          const cardBorder = index === 0
-            ? 'border-purple-500/60 shadow-[0_0_28px_rgba(168,85,247,0.2)] hover:border-purple-400 hover:shadow-[0_0_36px_rgba(168,85,247,0.35)]'
-            : index === 1
-            ? 'border-cyan-500/50 shadow-[0_0_24px_rgba(6,182,212,0.18)] hover:border-cyan-400 hover:shadow-[0_0_32px_rgba(6,182,212,0.3)]'
-            : index === 2
-            ? 'border-blue-500/50 shadow-[0_0_24px_rgba(59,130,246,0.18)] hover:border-blue-400 hover:shadow-[0_0_32px_rgba(59,130,246,0.3)]'
-            : index === 3
-            ? 'border-amber-500/50 shadow-[0_0_24px_rgba(245,158,11,0.18)] hover:border-amber-400 hover:shadow-[0_0_32px_rgba(245,158,11,0.3)]'
-            : index === 4
-            ? 'border-teal-500/50 shadow-[0_0_24px_rgba(20,184,166,0.18)] hover:border-teal-400 hover:shadow-[0_0_32px_rgba(20,184,166,0.3)]'
-            : 'border-indigo-500/50 shadow-[0_0_24px_rgba(99,102,241,0.18)] hover:border-indigo-400 hover:shadow-[0_0_32px_rgba(99,102,241,0.3)]';
-
-          const tagBadgeStyle = index === 0
-            ? 'bg-purple-950/80 border-purple-400/50 text-purple-300'
-            : index === 1
-            ? 'bg-cyan-950/80 border-cyan-400/50 text-cyan-300'
-            : index === 2
-            ? 'bg-blue-950/80 border-blue-400/50 text-blue-300'
-            : index === 3
-            ? 'bg-amber-950/80 border-amber-400/50 text-amber-300'
-            : index === 4
-            ? 'bg-teal-950/80 border-teal-400/50 text-teal-300'
-            : 'bg-indigo-950/80 border-indigo-400/50 text-indigo-300';
-
           return (
             <motion.div
               key={cert.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, delay: index * 0.08 }}
-              className={`glass-panel glass-panel-hover rounded-2xl overflow-hidden border flex flex-col justify-between group hud-corner relative transition-all duration-300 bg-[#090d26]/90 backdrop-blur-xl ${cardBorder}`}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="relative rounded-2xl overflow-hidden border border-purple-500/30 hover:border-amber-400/60 bg-gradient-to-b from-[#0b0e2b]/95 via-[#070b20]/95 to-[#030614]/95 flex flex-col justify-between group shadow-xl hover:shadow-[0_0_30px_rgba(251,191,36,0.18)] transition-all duration-300"
             >
               <div>
-                {/* Real Certificate Preview Picture (Click/Touch to Enlarge) */}
+                {/* Certificate Thumbnail Preview (Clickable to Enlarge) */}
                 <button
                   type="button"
                   onClick={() => setSelectedCert(cert)}
-                  aria-label={`Enlarge original certificate: ${cert.name}`}
-                  className="w-full text-left relative aspect-[16/11] bg-[#030614] overflow-hidden border-b border-slate-800/80 p-2 sm:p-2.5 flex items-center justify-center cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                  aria-label={`Enlarge ${cert.name} certificate`}
+                  className="w-full text-left relative aspect-[16/10] bg-[#070b1e] overflow-hidden border-b border-slate-800/80 cursor-pointer group/canvas focus:outline-none focus:ring-2 focus:ring-amber-400/50 block"
                 >
                   <img
                     src={cert.previewUrl || cert.thumbnail}
-                    alt={`${cert.name} - Original Certificate`}
+                    alt={cert.name}
                     loading="lazy"
-                    className="w-full h-full object-contain rounded-lg shadow-lg group-hover/canvas:scale-[1.03] transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover/canvas:scale-105 transition-transform duration-700 opacity-90 group-hover/canvas:opacity-100"
                   />
 
-                  {/* Year Tag */}
-                  {cert.year && (
-                    <div className="absolute top-3 right-3 z-10 pointer-events-none">
-                      <span className="px-2.5 py-0.5 rounded text-[10.5px] font-mono bg-slate-900/90 border border-slate-700 text-cyan-300 shadow">
-                        {cert.year}
-                      </span>
-                    </div>
-                  )}
+                  {/* Gradient Scrim */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080d24] via-transparent to-transparent opacity-80 pointer-events-none" />
 
-                  {/* Hover / Touch Indicator: Click to enlarge original certificate */}
-                  <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1px] z-10 pointer-events-none">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-white bg-slate-900/95 border border-cyan-400/50 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
-                      <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Click to enlarge certificate</span>
+                  {/* Issuer & Year Tag */}
+                  <div className="absolute top-3 left-3 pointer-events-none z-10">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-mono font-semibold tracking-wide shadow-md border bg-[#060a1e]/90 border-amber-400/40 text-amber-300">
+                      {cert.issuer}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-3 right-3 pointer-events-none z-10">
+                    <span className="px-2.5 py-1 rounded-full text-[11px] font-mono bg-slate-950/80 border border-slate-700 text-slate-300">
+                      {cert.year}
+                    </span>
+                  </div>
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-slate-950/45 opacity-0 group-hover/canvas:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[2px] pointer-events-none z-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-950 bg-amber-400 shadow-xl transform translate-y-1 group-hover/canvas:translate-y-0 transition-transform">
+                      <Maximize2 className="w-3.5 h-3.5 text-slate-950" />
+                      <span>View Full Certificate</span>
                     </span>
                   </div>
                 </button>
 
-                {/* Certificate Meta Details */}
-                <div className="p-5 sm:p-6 space-y-3">
-                  <span className={`inline-block px-2.5 py-0.5 rounded text-[11px] font-mono font-medium tracking-wide uppercase border ${tagBadgeStyle}`}>
-                    {cert.issuer}
-                  </span>
-
-                  <h3 className="text-lg font-display font-bold text-white group-hover:text-cyan-200 transition-colors leading-snug">
+                {/* Card Content Body */}
+                <div className="p-6 space-y-3">
+                  <h3 className="text-lg sm:text-xl font-display font-bold text-white group-hover:text-amber-200 transition-colors leading-snug">
                     {cert.name}
                   </h3>
 
-                  {/* Description / Summary */}
                   {cert.description && (
-                    <p className="text-xs text-slate-300 font-light leading-relaxed line-clamp-2">
+                    <p className="text-xs sm:text-[13px] text-slate-300 leading-relaxed font-light">
                       {cert.description}
                     </p>
                   )}
 
-                  {/* Skills covered tags */}
+                  {/* Skills Covered */}
                   {cert.skillsCovered && cert.skillsCovered.length > 0 && (
-                    <div className="pt-1">
-                      <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">
-                        Skills Covered:
+                    <div className="pt-2">
+                      <span className="text-[10.5px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5 font-medium">
+                        Core Competencies:
                       </span>
                       <div className="flex flex-wrap gap-1.5">
-                        {cert.skillsCovered.slice(0, 4).map((skill) => (
+                        {cert.skillsCovered.map((skill: string) => (
                           <span
                             key={skill}
-                            className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#0b1338] text-slate-300 border border-cyan-500/20"
+                            className="px-2.5 py-0.5 rounded-md text-[11px] font-mono bg-[#110f33] text-purple-200 border border-purple-500/30"
                           >
                             {skill}
                           </span>
@@ -152,17 +125,30 @@ export const Certifications: React.FC = () => {
                   )}
                 </div>
               </div>
+
+              {/* Action Buttons */}
+              <div className="p-6 pt-0 mt-4">
+                <div className="pt-4 border-t border-slate-800/80 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCert(cert)}
+                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold font-display tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 shadow-[0_0_15px_rgba(251,191,36,0.25)] transition-all active:scale-95 cursor-pointer"
+                  >
+                    <Maximize2 className="w-3.5 h-3.5 text-slate-950" />
+                    <span>View Certificate</span>
+                  </button>
+                </div>
+              </div>
             </motion.div>
           );
         })}
       </div>
 
-      {/* Data-Driven Certificate Lightbox (Edge-Safe, Zero iframes) */}
+      {/* Certificate Modal Preview */}
       <CertificateModal
         certification={selectedCert}
         onClose={() => setSelectedCert(null)}
       />
-
     </section>
   );
 };

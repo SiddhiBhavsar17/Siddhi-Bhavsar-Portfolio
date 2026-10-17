@@ -42,7 +42,7 @@ export const CosmicBackground: React.FC = () => {
       alphaSpeed: number;
     }
 
-    const colors = ['#38bdf8', '#818cf8', '#a855f7', '#06b6d4', '#e2e8f0'];
+    const colors = ['#fbbf24', '#fde047', '#c084fc', '#a855f7', '#38bdf8', '#ffffff'];
     const particles: Particle[] = Array.from({ length: particleCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,

@@ -100,30 +100,28 @@ export const Contact: React.FC<ContactProps> = ({ onOpenResume }) => {
   ];
 
   return (
-    <section id="contact" className="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      
+    <section id="contact" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Background ambient lighting accent */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      {/* Section Header */}
-      <div className="flex items-center justify-between gap-4 mb-10 pb-4 border-b border-slate-800/80">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-            <Mail className="w-5 h-5" />
+      {/* Section Header with Refined Cosmic Hierarchy */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12 pb-5 border-b border-slate-800/80">
+        <div>
+          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.25em] text-amber-400 mb-2">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>TRANSMIT ACROSS THE COSMOS</span>
           </div>
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
-              Let&apos;s Connect
-            </h2>
-            <p className="text-xs text-slate-400 font-mono uppercase tracking-wider">
-              COLLABORATION • HACKATHONS • RESEARCH INQUIRIES
-            </p>
-          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight">
+            Let&apos;s Connect
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono tracking-wide mt-1">
+            Open to AI/ML engineering roles, research collaborations, hackathons, and technical dialogue.
+          </p>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-cyan-300">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0a0e29] border border-amber-400/30 text-xs font-mono text-amber-300">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>INBOX OPEN</span>
+          <span>INBOX & TRANSMISSIONS OPEN</span>
         </div>
       </div>
 
