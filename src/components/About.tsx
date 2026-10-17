@@ -105,25 +105,25 @@ export const About: React.FC = () => {
 
           {/* Essential Info Directly Visible Inside The Card */}
           <div className="pt-4 border-t border-slate-800/80 space-y-2.5">
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-slate-400 gap-1">
               <span className="flex items-center gap-1.5 text-slate-300">
-                <Building2 className="w-3.5 h-3.5 text-amber-400" />
+                <Building2 className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
                 <span>Institution:</span>
               </span>
-              <span className="text-amber-200 font-medium">{personalData.college}</span>
+              <span className="text-amber-200 font-medium sm:text-right">{personalData.college}</span>
             </div>
 
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-slate-400 gap-1">
               <span className="flex items-center gap-1.5 text-slate-300">
-                <MapPin className="w-3.5 h-3.5 text-purple-400" />
+                <MapPin className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
                 <span>Location:</span>
               </span>
-              <span className="text-slate-300 font-medium">{personalData.location}</span>
+              <span className="text-slate-300 font-medium sm:text-right">{personalData.location}</span>
             </div>
 
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400 pt-1">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-slate-400 pt-1 gap-1">
               <span className="text-slate-400">Specialization:</span>
-              <div className="flex items-center gap-1.5 justify-end text-amber-300 font-medium">
+              <div className="flex flex-wrap items-center gap-1.5 sm:justify-end text-amber-300 font-medium">
                 {personalData.specialization.map((spec, i) => (
                   <React.Fragment key={spec}>
                     <span>{spec}</span>
@@ -145,7 +145,7 @@ export const About: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="relative rounded-2xl p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-b from-[#0c0d2e]/90 via-[#070b20]/90 to-[#030614]/90 border border-indigo-500/25 hover:border-amber-400/50 shadow-[0_4px_25px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] backdrop-blur-xl transition-all group"
+          className="relative rounded-2xl p-5 sm:p-7 lg:p-8 flex flex-col justify-between bg-gradient-to-b from-[#0c0d2e]/90 via-[#070b20]/90 to-[#030614]/90 border border-indigo-500/25 hover:border-amber-400/50 shadow-[0_4px_25px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] backdrop-blur-xl transition-all group"
         >
           <div>
             {/* Header */}
@@ -169,16 +169,16 @@ export const About: React.FC = () => {
                 return (
                   <div
                     key={edu.degree}
-                    className={`p-4 rounded-xl border transition-all ${
+                    className={`p-3.5 sm:p-4 rounded-xl border transition-all ${
                       isFirst
                         ? 'bg-gradient-to-r from-[#14123d]/90 to-[#0c1438]/90 border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.15)]'
                         : 'bg-[#060a1c]/80 border-slate-800/80 hover:border-slate-700'
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="space-y-0.5">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                      <div className="space-y-0.5 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className={`w-2 h-2 rounded-full ${isFirst ? 'bg-amber-400 animate-pulse' : 'bg-slate-500'}`} />
+                          <span className={`w-2 h-2 rounded-full flex-shrink-0 ${isFirst ? 'bg-amber-400 animate-pulse' : 'bg-slate-500'}`} />
                           <h4 className="text-sm font-display font-bold text-white leading-tight">
                             {edu.degree}
                           </h4>
@@ -186,12 +186,12 @@ export const About: React.FC = () => {
                         <p className="text-xs text-slate-300 pl-4">{edu.institution}</p>
                       </div>
 
-                      <div className="text-right flex-shrink-0">
-                        <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1 justify-end">
+                      <div className="sm:text-right flex items-center sm:flex-col justify-between sm:justify-start gap-2 flex-shrink-0 pl-4 sm:pl-0">
+                        <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1 sm:justify-end">
                           <Calendar className="w-3 h-3 text-amber-400/80" />
                           <span>{edu.period}</span>
                         </span>
-                        <div className="mt-1 flex items-center gap-1 justify-end">
+                        <div className="flex items-center gap-1 sm:justify-end">
                           <Award className="w-3 h-3 text-amber-400" />
                           <span className="text-xs font-mono font-bold text-amber-300">
                             {edu.cgpa ? `CGPA: ${edu.cgpa}` : edu.percentage}

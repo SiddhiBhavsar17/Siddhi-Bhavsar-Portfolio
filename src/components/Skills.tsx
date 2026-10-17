@@ -253,10 +253,9 @@ export const Skills: React.FC = () => {
       </div>
 
       {/* Constellation Category Filter Pills */}
-      <div className="flex flex-wrap items-center gap-2 mb-8">
+      <div className="flex items-center gap-1.5 sm:gap-2 mb-6 sm:mb-8 overflow-x-auto pb-2 sm:pb-0 scrollbar-none sm:flex-wrap">
         {skillCategories.map((cat) => {
           const isActive = activeCategory === cat;
-          const colors = clusterColors[cat] || clusterColors['Languages'];
           const isSpecialty = cat === "Siddhi's Specialty";
 
           return (
@@ -264,12 +263,12 @@ export const Skills: React.FC = () => {
               key={cat}
               type="button"
               onClick={() => setActiveCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all cursor-pointer ${
+              className={`px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all cursor-pointer whitespace-nowrap min-h-[36px] flex items-center flex-shrink-0 ${
                 isActive
                   ? isSpecialty
                     ? 'bg-amber-400 text-slate-950 font-bold border border-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.5)]'
                     : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold border border-purple-400/60 shadow-[0_0_15px_rgba(168,85,247,0.35)]'
-                  : 'bg-[#060a1e]/90 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700'
+                  : 'bg-[#060a1e]/90 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 active:bg-slate-800/80'
               }`}
             >
               <span>{cat}</span>
@@ -285,12 +284,12 @@ export const Skills: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
           {/* Interactive Constellation Visualizer Canvas (8 cols on Desktop) */}
-          <div className="lg:col-span-8 relative w-full h-[460px] sm:h-[540px] md:h-[600px] rounded-2xl bg-gradient-to-b from-[#06091d]/95 via-[#030614]/95 to-[#02040d]/95 border border-purple-500/30 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.8)] select-none">
+          <div className="lg:col-span-8 relative w-full h-[380px] xs:h-[420px] sm:h-[500px] md:h-[580px] lg:h-[620px] rounded-2xl bg-gradient-to-b from-[#06091d]/95 via-[#030614]/95 to-[#02040d]/95 border border-purple-500/30 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.8)] select-none">
             
             {/* Background Starlight & Grid lines */}
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full border border-amber-400/10 pointer-events-none" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-purple-500/10 border-dashed pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-72 h-48 sm:h-72 rounded-full border border-amber-400/10 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[440px] h-[300px] sm:h-[440px] rounded-full border border-purple-500/10 border-dashed pointer-events-none" />
 
             {/* SVG Constellation Lines */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
@@ -336,7 +335,7 @@ export const Skills: React.FC = () => {
               })}
             </svg>
 
-            {/* Interactive Celestial Star Nodes */}
+            {/* Interactive Celestial Star Nodes with Touch-Friendly Hit Targets */}
             <div className="absolute inset-0 z-20">
               {constellationNodes.map((node) => {
                 const isSelected = selectedSkill?.name === node.skill.name;
@@ -348,7 +347,7 @@ export const Skills: React.FC = () => {
                   <div
                     key={node.skill.id}
                     style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                    className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300 group ${
+                    className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300 group p-2.5 sm:p-1.5 -m-2.5 sm:-m-1.5 flex items-center justify-center min-w-[36px] min-h-[36px] ${
                       isFiltered ? 'opacity-100 scale-100' : 'opacity-25 scale-75'
                     }`}
                     onClick={() => setSelectedSkill(node.skill)}
@@ -373,8 +372,8 @@ export const Skills: React.FC = () => {
                         isSelected || isHovered ? 'scale-125' : 'group-hover:scale-110'
                       }`}
                       style={{
-                        width: `${node.size * 2.2}px`,
-                        height: `${node.size * 2.2}px`,
+                        width: `${node.size * 2}px`,
+                        height: `${node.size * 2}px`,
                         backgroundColor: '#030614',
                         border: `2px solid ${isSelected || isHovered ? '#ffffff' : node.color}`,
                         boxShadow: isSelected || isHovered
@@ -393,14 +392,14 @@ export const Skills: React.FC = () => {
                       />
                     </div>
 
-                    {/* Star Label */}
+                    {/* Star Label - Smart Display on mobile vs desktop */}
                     <span
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-mono tracking-wider whitespace-nowrap pointer-events-none transition-all ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 sm:mt-1.5 px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[11px] font-mono tracking-wider whitespace-nowrap pointer-events-none transition-all ${
                         isSelected || isHovered
                           ? 'bg-slate-950/95 text-amber-300 border border-amber-400 font-bold shadow-lg z-30 scale-105'
                           : isCore
-                            ? 'bg-[#080d26]/85 text-amber-200/90 border border-amber-500/30'
-                            : 'bg-[#080d26]/75 text-slate-300 border border-slate-800'
+                            ? 'bg-[#080d26]/90 text-amber-200/90 border border-amber-500/30'
+                            : 'hidden sm:block bg-[#080d26]/75 text-slate-300 border border-slate-800'
                       }`}
                     >
                       {node.skill.name}
@@ -411,28 +410,28 @@ export const Skills: React.FC = () => {
             </div>
 
             {/* Bottom Constellation Legend */}
-            <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-4 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
-              <div className="flex items-center gap-3 px-3 py-1.5 rounded-full bg-slate-950/85 border border-slate-800 backdrop-blur-md text-[10px] font-mono text-slate-300">
+            <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-4 right-2 sm:right-4 z-30 flex flex-wrap items-center justify-between gap-1.5 pointer-events-none">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-950/90 border border-slate-800 backdrop-blur-md text-[8.5px] xs:text-[9.5px] sm:text-[10px] font-mono text-slate-300">
                 <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
-                  <span>AI/ML Core</span>
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400" />
+                  <span>AI/ML</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400" />
                   <span>Languages</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-purple-400" />
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-purple-400" />
                   <span>Dev</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400" />
                   <span>Tools</span>
                 </span>
               </div>
 
-              <div className="text-[10px] font-mono text-slate-400 bg-slate-950/85 px-3 py-1.5 rounded-full border border-slate-800">
-                Click any star to inspect node
+              <div className="hidden xs:block text-[9px] sm:text-[10px] font-mono text-slate-400 bg-slate-950/90 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-800">
+                Tap star to inspect
               </div>
             </div>
           </div>
@@ -445,32 +444,32 @@ export const Skills: React.FC = () => {
                 initial={{ opacity: 0, x: 15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4 }}
-                className="rounded-2xl p-6 bg-gradient-to-b from-[#0c0d2e]/95 via-[#080c24]/95 to-[#040614]/95 border border-amber-400/40 shadow-[0_8px_30px_rgba(251,191,36,0.15)] backdrop-blur-xl"
+                className="rounded-2xl p-4 sm:p-6 bg-gradient-to-b from-[#0c0d2e]/95 via-[#080c24]/95 to-[#040614]/95 border border-amber-400/40 shadow-[0_8px_30px_rgba(251,191,36,0.15)] backdrop-blur-xl"
               >
-                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-800">
                   <div className="flex items-center gap-2 text-xs font-mono text-amber-300 uppercase tracking-widest">
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span>STAR NODE INSPECTOR</span>
+                    <span className="truncate">STAR NODE INSPECTOR</span>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40 flex-shrink-0">
                     {activeNode.cluster}
                   </span>
                 </div>
 
-                <div className="mt-5 space-y-4">
+                <div className="mt-4 sm:mt-5 space-y-4">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg border"
+                      className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg border flex-shrink-0"
                       style={{
                         backgroundColor: '#0a0f2e',
                         borderColor: activeNode.color,
                         boxShadow: `0 0 20px ${activeNode.glowColor}`
                       }}
                     >
-                      <Brain className="w-6 h-6" style={{ color: activeNode.color }} />
+                      <Brain className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: activeNode.color }} />
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-display font-extrabold text-white tracking-wide">
+                    <div className="min-w-0">
+                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-wide truncate">
                         {activeNode.skill.name}
                       </h3>
                       <p className="text-xs font-mono text-slate-400">

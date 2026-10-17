@@ -32,7 +32,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#030510] text-slate-100 selection:bg-amber-400/30 selection:text-amber-200">
+    <div className="relative min-h-screen w-full max-w-[100vw] overflow-x-clip bg-[#030510] text-slate-100 selection:bg-amber-400/30 selection:text-amber-200">
       {/* ========================================================================= */}
       {/* CINEMATIC BIG BANG INTRO ANIMATION (SCENE 1, 2 & 3)                      */}
       {/* ========================================================================= */}
@@ -52,7 +52,7 @@ export default function App() {
       />
 
       {/* Main Content Sections */}
-      <main className="relative z-10 space-y-4 sm:space-y-8">
+      <main className="relative z-10 w-full overflow-x-clip space-y-4 sm:space-y-8">
         <Hero 
           onOpenResume={() => setIsResumeOpen(true)} 
           introActive={showIntro}

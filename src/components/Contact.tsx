@@ -125,8 +125,8 @@ export const Contact: React.FC<ContactProps> = ({ onOpenResume }) => {
         </div>
       </div>
 
-      {/* Rebalanced 5 Contact Cards Grid (Neat 5-column on XL, 3 on LG, 2 on SM) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5">
+      {/* Rebalanced 5 Contact Cards Grid (Neat 5-column on XL, 3 on LG, 2 on SM, 1 on narrow XS) */}
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5 sm:gap-5">
         {contactLinks.map((item, index) => {
           const isButton = item.isAction && item.name === 'Resume';
 

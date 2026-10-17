@@ -61,15 +61,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
       {/* ========================================================================= */}
       {/* 1. COSMIC BACKGROUND HARMONICS: GOLDEN & PURPLE AMBIENT ENERGY CORE       */}
       {/* ========================================================================= */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center -z-10">
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center -z-10 overflow-hidden">
         {/* Giant golden-purple cosmic energy aura centered on the hero */}
-        <div className="absolute w-[360px] h-[360px] sm:w-[540px] sm:h-[540px] lg:w-[720px] lg:h-[720px] rounded-full bg-gradient-to-tr from-amber-500/10 via-purple-600/15 to-cyan-500/10 blur-3xl pointer-events-none" />
-        <div className="absolute w-[240px] h-[240px] sm:w-[380px] sm:h-[380px] rounded-full bg-amber-400/8 blur-2xl pointer-events-none" />
+        <div className="absolute w-[280px] h-[280px] sm:w-[500px] sm:h-[500px] lg:w-[720px] lg:h-[720px] rounded-full bg-gradient-to-tr from-amber-500/10 via-purple-600/15 to-cyan-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute w-[200px] h-[200px] sm:w-[340px] sm:h-[340px] rounded-full bg-amber-400/8 blur-2xl pointer-events-none" />
 
         {/* Concentric faint orbital harmonic rings */}
-        <div className="absolute w-[300px] h-[300px] sm:w-[460px] sm:h-[460px] lg:w-[620px] lg:h-[620px] rounded-full border border-amber-400/15 pointer-events-none" />
-        <div className="absolute w-[420px] h-[420px] sm:w-[620px] sm:h-[620px] lg:w-[820px] lg:h-[820px] rounded-full border border-purple-500/10 border-dashed pointer-events-none" />
-        <div className="absolute w-[560px] h-[560px] sm:w-[800px] sm:h-[800px] lg:w-[1040px] lg:h-[1040px] rounded-full border border-cyan-400/10 pointer-events-none" />
+        <div className="absolute w-[260px] h-[260px] sm:w-[440px] sm:h-[440px] lg:w-[620px] lg:h-[620px] rounded-full border border-amber-400/15 pointer-events-none" />
+        <div className="absolute w-[340px] h-[340px] sm:w-[580px] sm:h-[580px] lg:w-[820px] lg:h-[820px] rounded-full border border-purple-500/10 border-dashed pointer-events-none" />
+        <div className="absolute w-[460px] h-[460px] sm:w-[760px] sm:h-[760px] lg:w-[1040px] lg:h-[1040px] rounded-full border border-cyan-400/10 pointer-events-none" />
 
         {/* Subtle breathing cosmic star nodes */}
         <span className="absolute top-[16%] left-[20%] w-1.5 h-1.5 rounded-full bg-amber-400/60 shadow-[0_0_8px_#f59e0b] animate-pulse" />
@@ -81,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
       {/* ========================================================================= */}
       {/* 2. CENTERED COSMIC IDENTITY HERO CONTENT CONTAINER                        */}
       {/* ========================================================================= */}
-      <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center text-center z-10">
+      <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center text-center z-10 px-2 sm:px-4">
 
         {/* ----------------------------------------------------------------------- */}
         {/* 3. CENTERED PROFILE: GLOWING GOLDEN COSMIC RING AROUND ACTUAL PHOTO    */}
@@ -90,25 +90,25 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="relative my-3 flex items-center justify-center group/avatar cursor-pointer"
+          className="relative my-2 sm:my-3 flex items-center justify-center group/avatar cursor-pointer"
         >
           {/* Outer Pulsing Golden Halo */}
-          <div className="absolute -inset-4 sm:-inset-6 rounded-full bg-gradient-to-tr from-amber-500/25 via-purple-500/20 to-yellow-400/25 blur-xl group-hover/avatar:blur-2xl transition-all duration-700 pointer-events-none" />
+          <div className="absolute -inset-3 sm:-inset-6 rounded-full bg-gradient-to-tr from-amber-500/25 via-purple-500/20 to-yellow-400/25 blur-lg sm:blur-xl group-hover/avatar:blur-2xl transition-all duration-700 pointer-events-none" />
 
           {/* Golden Cosmic Orbit Ring with Subtle Celestial Markers */}
           <div 
-            className="absolute -inset-3 sm:-inset-4 rounded-full border border-amber-400/60 border-dashed animate-spin pointer-events-none" 
+            className="absolute -inset-2.5 sm:-inset-4 rounded-full border border-amber-400/60 border-dashed animate-spin pointer-events-none" 
             style={{ animationDuration: '24s' }}
           />
 
           {/* Secondary Counter-Rotating Violet Energy Ring */}
           <div 
-            className="absolute -inset-1.5 sm:-inset-2 rounded-full border border-purple-500/40 border-dotted animate-spin pointer-events-none" 
+            className="absolute -inset-1 sm:-inset-2 rounded-full border border-purple-500/40 border-dotted animate-spin pointer-events-none" 
             style={{ animationDuration: '18s', animationDirection: 'reverse' }}
           />
 
           {/* Glowing Golden Ring Vessel */}
-          <div className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-full p-[3px] sm:p-1 bg-gradient-to-tr from-amber-400 via-purple-500 to-yellow-300 shadow-[0_0_40px_rgba(251,191,36,0.45)] group-hover/avatar:shadow-[0_0_60px_rgba(251,191,36,0.7)] transition-all duration-500">
+          <div className="relative w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-full p-[2.5px] sm:p-1 bg-gradient-to-tr from-amber-400 via-purple-500 to-yellow-300 shadow-[0_0_30px_rgba(251,191,36,0.45)] sm:shadow-[0_0_40px_rgba(251,191,36,0.45)] group-hover/avatar:shadow-[0_0_60px_rgba(251,191,36,0.7)] transition-all duration-500">
             {/* Inner Dark Rim */}
             <div className="w-full h-full rounded-full overflow-hidden bg-[#070b1f] border-2 border-[#030614] relative">
               <img 
@@ -123,9 +123,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
             </div>
 
             {/* Golden Status Crown Pip */}
-            <div className="absolute bottom-1 right-1 sm:bottom-1.5 sm:right-1.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#030614]/95 border border-amber-400/80 shadow-[0_0_12px_rgba(251,191,36,0.5)]">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-              <span className="text-[9px] sm:text-[10px] font-mono text-amber-200 font-bold tracking-widest">AI CORE</span>
+            <div className="absolute bottom-0.5 right-0.5 sm:bottom-1.5 sm:right-1.5 flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-[#030614]/95 border border-amber-400/80 shadow-[0_0_12px_rgba(251,191,36,0.5)]">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400 animate-ping" />
+              <span className="text-[8px] sm:text-[10px] font-mono text-amber-200 font-bold tracking-widest">AI CORE</span>
             </div>
           </div>
         </motion.div>
@@ -137,10 +137,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35 }}
-          className="mt-4 space-y-2 w-full"
+          className="mt-3 sm:mt-4 space-y-2 w-full max-w-full px-2"
         >
           {/* Main Name Heading with Purple-Gold Sheen */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-100 to-purple-200 uppercase drop-shadow-[0_0_35px_rgba(251,191,36,0.4)]">
+          <h1 className="text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold tracking-tight sm:tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-100 to-purple-200 uppercase drop-shadow-[0_0_35px_rgba(251,191,36,0.4)] break-words">
             {personalData.name}
           </h1>
 
@@ -196,14 +196,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.65 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-4 w-full sm:w-auto"
+          className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
         >
           {/* Explore Projects Button - Golden Cosmic Primary */}
           <a
             href="#projects"
             onClick={handleScrollToProjects}
             id="hero-view-projects-btn"
-            className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 shadow-[0_0_25px_rgba(251,191,36,0.4)] hover:shadow-[0_0_35px_rgba(251,191,36,0.65)] transition-all active:scale-[0.98] cursor-pointer"
+            className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 shadow-[0_0_25px_rgba(251,191,36,0.4)] hover:shadow-[0_0_35px_rgba(251,191,36,0.65)] transition-all active:scale-[0.98] cursor-pointer min-h-[44px] w-full sm:w-auto"
           >
             <span>Explore Projects</span>
             <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
@@ -215,7 +215,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
             target="_blank"
             rel="noopener noreferrer"
             id="hero-view-resume-btn"
-            className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-purple-200 hover:text-white bg-[#120d2a]/85 hover:bg-[#1a123d] border border-purple-500/50 hover:border-purple-300 shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_30px_rgba(168,85,247,0.45)] backdrop-blur-md transition-all active:scale-[0.98] cursor-pointer"
+            className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-display font-semibold text-xs sm:text-sm tracking-wider text-purple-200 hover:text-white bg-[#120d2a]/85 hover:bg-[#1a123d] border border-purple-500/50 hover:border-purple-300 shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_30px_rgba(168,85,247,0.45)] backdrop-blur-md transition-all active:scale-[0.98] cursor-pointer min-h-[44px] w-full sm:w-auto"
             title="View Official Resume (PDF in new tab)"
           >
             <Eye className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
@@ -228,7 +228,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, introActive = false })
             download={`${personalData.name.replace(/\s+/g, '_')}_Resume.pdf`}
             onClick={handleDownloadResume}
             id="hero-download-resume-btn"
-            className="inline-flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl font-display font-medium text-xs sm:text-sm tracking-wider text-slate-300 hover:text-white bg-[#090e24]/80 hover:bg-[#0f183d] border border-slate-700/80 hover:border-amber-400/50 shadow-md backdrop-blur-md transition-all active:scale-[0.98] cursor-pointer"
+            className="inline-flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl font-display font-medium text-xs sm:text-sm tracking-wider text-slate-300 hover:text-white bg-[#090e24]/80 hover:bg-[#0f183d] border border-slate-700/80 hover:border-amber-400/50 shadow-md backdrop-blur-md transition-all active:scale-[0.98] cursor-pointer min-h-[44px] w-full sm:w-auto"
             title="Download Official Resume (PDF)"
           >
             {isDownloading ? (

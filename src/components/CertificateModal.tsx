@@ -130,15 +130,15 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificatio
           </div>
 
           {/* Action Footer */}
-          <div className="px-5 py-4 bg-[#060a1c] border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 sticky bottom-0 z-20">
-            <div className="flex items-center gap-2.5">
+          <div className="px-4 sm:px-5 py-3 sm:py-4 bg-[#060a1c] border-t border-slate-800/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sticky bottom-0 z-20">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5">
               {/* Direct PDF Link (Opens in new tab, 100% Edge compatible) */}
               {externalDoc && (
                 <a
                   href={externalDoc}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-display font-semibold text-xs tracking-wider border border-cyan-400/40 transition-all shadow-md active:scale-95"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-display font-semibold text-xs tracking-wider border border-cyan-400/40 transition-all shadow-md active:scale-95 min-h-[44px]"
                 >
                   <FileText className="w-3.5 h-3.5 text-cyan-200" />
                   <span>Open Full PDF in New Tab</span>
@@ -152,7 +152,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificatio
                   href={certification.credentialUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-display font-semibold text-xs tracking-wider border border-slate-700 transition-all shadow-md active:scale-95"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-display font-semibold text-xs tracking-wider border border-slate-700 transition-all shadow-md active:scale-95 min-h-[44px]"
                 >
                   <span>Verify Credential</span>
                   <ExternalLink className="w-3.5 h-3.5 text-cyan-200" />
@@ -163,7 +163,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificatio
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors ml-auto"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors sm:ml-auto min-h-[44px]"
             >
               Close
             </button>

@@ -47,6 +47,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onReplayIntro }) =
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    if (mobileMenuOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
@@ -180,13 +197,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onReplayIntro }) =
         </div>
 
         {/* Mobile Menu Trigger & Replay */}
-        <div className="flex lg:hidden items-center gap-2">
+        <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 flex-shrink-0">
           {onReplayIntro && (
             <button
               type="button"
               onClick={onReplayIntro}
-              className="p-2 rounded-full text-amber-400 hover:text-white bg-[#1a1236]/90 border border-amber-400/40"
+              className="p-2 rounded-full text-amber-400 hover:text-white bg-[#1a1236]/90 border border-amber-400/40 min-h-[42px] min-w-[42px] flex items-center justify-center cursor-pointer active:scale-95"
               title="Replay Big Bang Intro"
+              aria-label="Replay Big Bang Intro"
             >
               <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '6s' }} />
             </button>
@@ -195,59 +213,83 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onReplayIntro }) =
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl text-slate-200 hover:text-white bg-[#080d26]/80 border border-slate-700 hover:border-amber-400 transition-colors"
-            aria-label="Toggle navigation menu"
+            className="p-2 rounded-xl text-slate-200 hover:text-white bg-[#080d26]/80 border border-slate-700 hover:border-amber-400 transition-colors min-h-[42px] min-w-[42px] flex items-center justify-center cursor-pointer active:scale-95"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5 text-amber-400" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Backdrop and Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden px-4 pt-3 pb-6 bg-[#030614]/95 border-b border-amber-400/30 backdrop-blur-2xl space-y-2">
-          <div className="grid grid-cols-2 gap-2 pt-2">
-            {navLinks.map((link) => {
-              const sectionId = link.href.replace('#', '');
-              const isActive = activeSection === sectionId;
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className={`px-3 py-2 rounded-xl text-xs font-mono uppercase tracking-wider text-center transition-all ${
-                    isActive
-                      ? 'bg-gradient-to-r from-amber-500/25 to-purple-600/30 text-amber-300 border border-amber-400/50 font-bold'
-                      : 'text-slate-300 hover:bg-white/5 border border-slate-800'
-                  }`}
-                >
-                  {link.name}
-                </a>
-              );
-            })}
-          </div>
+        <>
+          {/* Dimmed backdrop - click to close */}
+          <div 
+            className="fixed inset-0 top-[56px] sm:top-[64px] bg-black/70 backdrop-blur-sm z-40 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
 
-          <div className="pt-3 border-t border-slate-800/80 flex flex-col gap-2">
-            <a
-              href={personalData.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#120d2a] border border-purple-500/40 text-purple-200 text-xs font-mono"
-            >
-              <Eye className="w-4 h-4 text-purple-400" />
-              <span>View Official Resume</span>
-            </a>
+          <div className="relative z-50 lg:hidden px-4 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] bg-[#030614]/98 border-b border-amber-400/30 backdrop-blur-2xl shadow-2xl space-y-3 max-h-[calc(100vh-64px)] overflow-y-auto">
+            {/* Navigation Grid (2 cols on phone, 4 cols on tablet) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              {navLinks.map((link) => {
+                const sectionId = link.href.replace('#', '');
+                const isActive = activeSection === sectionId;
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`min-h-[44px] px-3 py-2.5 rounded-xl text-xs font-mono uppercase tracking-wider text-center flex items-center justify-center transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-gradient-to-r from-amber-500/25 to-purple-600/30 text-amber-300 border border-amber-400/60 font-bold shadow-[0_0_12px_rgba(251,191,36,0.25)]'
+                        : 'text-slate-200 hover:text-white hover:bg-white/5 border border-slate-800 active:bg-white/10'
+                    }`}
+                  >
+                    <span>{link.name}</span>
+                  </a>
+                );
+              })}
+            </div>
 
-            <button
-              type="button"
-              onClick={handleConnectClick}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg"
-            >
-              <span>Connect with Siddhi</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </button>
+            {/* Mobile Actions Stack */}
+            <div className="pt-3 border-t border-slate-800/90 grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <a
+                href={personalData.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#120d2a] border border-purple-500/40 text-purple-200 text-xs font-mono font-medium active:scale-98 transition-all"
+              >
+                <Eye className="w-4 h-4 text-purple-400" />
+                <span>View Official Resume</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenResume();
+                }}
+                className="min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-amber-300 text-xs font-mono font-medium active:scale-98 transition-all cursor-pointer"
+              >
+                <FileDown className="w-4 h-4 text-amber-400" />
+                <span>Download Resume (PDF)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleConnectClick}
+                className="sm:col-span-2 min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg active:scale-98 transition-all cursor-pointer"
+              >
+                <span>Connect with Siddhi</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

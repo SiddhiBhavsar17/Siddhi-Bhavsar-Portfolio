@@ -37,34 +37,34 @@ export const ExperienceDocModal: React.FC<ExperienceDocModalProps> = ({ data, on
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.94 }}
-          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#080d24] border border-cyan-500/30 shadow-2xl p-6 sm:p-8 hud-corner"
+          className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#080d24] border border-cyan-500/30 shadow-2xl p-5 sm:p-8 hud-corner"
         >
           {/* Close Button */}
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white transition-colors"
+            className="absolute top-4 right-4 p-2.5 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             aria-label="Close Preview"
           >
             <X className="w-5 h-5" />
           </button>
 
           {/* Modal Header */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className={`p-3 rounded-xl border ${
+          <div className="flex items-center gap-3 mb-5 sm:mb-6 pr-8">
+            <div className={`p-2.5 sm:p-3 rounded-xl border flex-shrink-0 ${
               isOfferLetter 
                 ? 'bg-purple-950/60 border-purple-500/30 text-purple-400' 
                 : 'bg-cyan-950/60 border-cyan-500/30 text-cyan-400'
             }`}>
-              {isOfferLetter ? <FileText className="w-6 h-6" /> : <Award className="w-6 h-6" />}
+              {isOfferLetter ? <FileText className="w-5 h-5 sm:w-6 sm:h-6" /> : <Award className="w-5 h-5 sm:w-6 sm:h-6" />}
             </div>
-            <div>
+            <div className="min-w-0">
               <span className={`text-xs font-mono uppercase tracking-wider block ${
                 isOfferLetter ? 'text-purple-400' : 'text-cyan-400'
               }`}>
                 {isOfferLetter ? 'OFFICIAL OFFER LETTER' : 'VERIFIED EXPERIENCE CREDENTIAL'}
               </span>
-              <h3 className="text-xl sm:text-2xl font-display font-bold text-white">
+              <h3 className="text-lg sm:text-2xl font-display font-bold text-white truncate">
                 {data.title}
               </h3>
             </div>

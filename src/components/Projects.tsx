@@ -131,25 +131,25 @@ export const Projects: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight group-hover/flagship:text-amber-200 transition-colors">
+                  <h3 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight group-hover/flagship:text-amber-200 transition-colors break-words">
                     {featuredProject.name}
                   </h3>
 
-                  <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-light mt-4">
+                  <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-light mt-3 sm:mt-4">
                     {featuredProject.description}
                   </p>
                 </div>
 
                 {/* Technical Stack Pills with Purple-Gold Harmonics */}
                 <div>
-                  <span className="text-xs font-mono text-slate-400 uppercase tracking-wider block mb-2.5 font-medium">
+                  <span className="text-xs font-mono text-slate-400 uppercase tracking-wider block mb-2 font-medium">
                     Integrated Technologies & Frameworks:
                   </span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {featuredProject.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 rounded-lg text-xs font-mono bg-[#14123d] text-amber-300 border border-purple-500/40 font-medium shadow-sm hover:border-amber-400 transition-colors"
+                        className="px-2.5 sm:px-3 py-1 rounded-lg text-xs font-mono bg-[#14123d] text-amber-300 border border-purple-500/40 font-medium shadow-sm hover:border-amber-400 transition-colors"
                       >
                         {tech}
                       </span>
@@ -158,12 +158,12 @@ export const Projects: React.FC = () => {
                 </div>
 
                 {/* Actions: GitHub Repository & Preview Modal */}
-                <div className="pt-4 border-t border-slate-800/90 flex flex-wrap items-center gap-3">
+                <div className="pt-4 border-t border-slate-800/90 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                   <a
                     href={featuredProject.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl text-xs sm:text-sm font-semibold font-display tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 shadow-[0_0_20px_rgba(251,191,36,0.35)] transition-all active:scale-95 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 py-3 px-5 sm:px-6 rounded-xl text-xs sm:text-sm font-semibold font-display tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 shadow-[0_0_20px_rgba(251,191,36,0.35)] transition-all active:scale-95 cursor-pointer min-h-[44px] w-full sm:w-auto"
                   >
                     <Github className="w-4 h-4 text-slate-950" />
                     <span>View GitHub Repository</span>
@@ -173,7 +173,7 @@ export const Projects: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setMediaProject(featuredProject)}
-                    className="inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-xs sm:text-sm font-medium font-mono text-purple-200 hover:text-white bg-[#150f33]/80 hover:bg-[#20164c] border border-purple-500/50 hover:border-purple-300 transition-all cursor-pointer shadow-sm active:scale-95"
+                    className="inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-xs sm:text-sm font-medium font-mono text-purple-200 hover:text-white bg-[#150f33]/80 hover:bg-[#20164c] border border-purple-500/50 hover:border-purple-300 transition-all cursor-pointer shadow-sm active:scale-95 min-h-[44px] w-full sm:w-auto"
                   >
                     <Maximize2 className="w-3.5 h-3.5 text-purple-400" />
                     <span>Enlarge Showcase</span>

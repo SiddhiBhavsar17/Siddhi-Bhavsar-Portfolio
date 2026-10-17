@@ -954,12 +954,12 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
       />
 
       {/* Top Controls: Sound Toggle & Skip Intro */}
-      <div className="absolute top-5 left-0 right-0 z-30 px-5 sm:px-8 flex items-center justify-between pointer-events-auto">
+      <div className="absolute top-3 sm:top-5 left-0 right-0 z-30 px-3 sm:px-8 flex items-center justify-between pointer-events-auto">
         {/* Sound Toggle */}
         <button
           type="button"
           onClick={toggleSound}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-slate-700/60 hover:border-yellow-400 text-slate-200 hover:text-white backdrop-blur-md transition-all text-xs font-mono group cursor-pointer shadow-lg"
+          className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-slate-950/85 border border-slate-700/60 hover:border-yellow-400 text-slate-200 hover:text-white backdrop-blur-md transition-all text-[11px] sm:text-xs font-mono group cursor-pointer shadow-lg min-h-[42px] active:scale-95"
           aria-label={isMuted ? 'Turn Sound On' : 'Mute Sound'}
         >
           {isMuted ? (
@@ -979,42 +979,39 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
         <button
           type="button"
           onClick={handleFinish}
-          className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-950/80 border border-slate-700/60 hover:border-yellow-400 text-slate-200 hover:text-white backdrop-blur-md transition-all text-xs font-mono group cursor-pointer shadow-lg"
+          className="flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-950/85 border border-slate-700/60 hover:border-yellow-400 text-slate-200 hover:text-white backdrop-blur-md transition-all text-[11px] sm:text-xs font-mono group cursor-pointer shadow-lg min-h-[42px] active:scale-95"
           aria-label="Skip Intro Animation"
         >
-          <span>Skip Intro</span>
+          <span>Skip</span>
           <FastForward className="w-3.5 h-3.5 text-yellow-400 group-hover:translate-x-0.5 transition-transform" />
           <span className="hidden sm:inline text-[10px] text-slate-400 font-mono">[Esc]</span>
         </button>
       </div>
 
       {/* ========================================================================= */}
-      {/* SCENE 4: REVEAL MY PORTFOLIO (Name, Profile Photo, Headline & Actions)   */}
-      {/* ========================================================================= */}
-      {/* ========================================================================= */}
       {/* SCENE 4: REVEAL MY PORTFOLIO (Centered Cosmic Identity Reveal)             */}
       {/* ========================================================================= */}
       {phase === 'reveal' && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none px-4">
-          <div className="text-center max-w-xl mx-auto space-y-3.5 my-auto py-8 pointer-events-auto">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none px-3 sm:px-4">
+          <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3.5 my-auto py-6 sm:py-8 pointer-events-auto w-full">
             {/* 1. Staggered Profile Photo with Glowing Golden Cosmic Ring */}
             <motion.div
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mx-auto w-28 h-28 sm:w-36 sm:h-36 flex items-center justify-center"
+              className="relative mx-auto w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center"
             >
               {/* Outer Golden Glow Aura */}
-              <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-amber-500/30 via-purple-500/25 to-yellow-400/30 blur-xl pointer-events-none" />
+              <div className="absolute -inset-3 sm:-inset-4 rounded-full bg-gradient-to-tr from-amber-500/30 via-purple-500/25 to-yellow-400/30 blur-lg sm:blur-xl pointer-events-none" />
 
               {/* Spinning Golden Dashed Orbit Ring */}
               <div 
-                className="absolute -inset-3 rounded-full border border-amber-400/60 border-dashed animate-spin pointer-events-none" 
+                className="absolute -inset-2.5 sm:-inset-3 rounded-full border border-amber-400/60 border-dashed animate-spin pointer-events-none" 
                 style={{ animationDuration: '20s' }} 
               />
 
               {/* Glowing Golden Cosmic Ring Vessel */}
-              <div className="relative w-full h-full rounded-full p-[3px] bg-gradient-to-tr from-amber-400 via-purple-500 to-yellow-300 shadow-[0_0_45px_rgba(251,191,36,0.65)]">
+              <div className="relative w-full h-full rounded-full p-[2.5px] sm:p-[3px] bg-gradient-to-tr from-amber-400 via-purple-500 to-yellow-300 shadow-[0_0_35px_rgba(251,191,36,0.65)]">
                 <div className="w-full h-full rounded-full overflow-hidden bg-[#070b1f] border-2 border-[#030614]">
                   <img
                     src={personalData.profileImage}
@@ -1028,8 +1025,8 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
               </div>
 
               {/* Orbit Sparkle Badge */}
-              <div className="absolute bottom-0 right-0 p-1.5 rounded-full bg-[#030614] border border-amber-400 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.5)]">
-                <Orbit className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '6s' }} />
+              <div className="absolute bottom-0 right-0 p-1 sm:p-1.5 rounded-full bg-[#030614] border border-amber-400 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.5)]">
+                <Orbit className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin" style={{ animationDuration: '6s' }} />
               </div>
             </motion.div>
 
@@ -1038,7 +1035,7 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-center justify-center gap-2 text-amber-300 text-xs sm:text-sm font-mono tracking-[0.25em] uppercase"
+              className="flex items-center justify-center gap-2 text-amber-300 text-[11px] sm:text-xs md:text-sm font-mono tracking-[0.2em] sm:tracking-[0.25em] uppercase px-2"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span>THE DIGITAL UNIVERSE OF</span>
@@ -1050,7 +1047,7 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-100 to-purple-200 tracking-wider uppercase drop-shadow-[0_0_35px_rgba(251,191,36,0.6)]"
+              className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-100 to-purple-200 tracking-tight sm:tracking-wider uppercase drop-shadow-[0_0_35px_rgba(251,191,36,0.6)] break-words px-2"
             >
               {personalData.name}
             </motion.h1>
@@ -1060,12 +1057,12 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="space-y-1"
+              className="space-y-0.5 sm:space-y-1 px-2"
             >
-              <p className="text-xs sm:text-sm text-slate-200 font-mono tracking-widest uppercase">
+              <p className="text-xs sm:text-sm text-slate-200 font-mono tracking-wider sm:tracking-widest uppercase">
                 {personalData.title} · PCU (CGPA 9.07)
               </p>
-              <p className="text-xs sm:text-sm text-amber-300/90 font-mono">
+              <p className="text-[11px] sm:text-xs md:text-sm text-amber-300/90 font-mono">
                 Machine Learning ✦ Deep Learning ✦ Generative AI ✦ Python
               </p>
             </motion.div>
@@ -1075,7 +1072,7 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.65 }}
-              className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed font-light"
+              className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed font-light px-2"
             >
               &ldquo;{personalData.motto || "Building intelligent systems for a better tomorrow."}&rdquo;
             </motion.p>
@@ -1085,12 +1082,12 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="pt-2 flex flex-wrap items-center justify-center gap-3"
+              className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 px-4 sm:px-0 w-full sm:w-auto"
             >
               <button
                 type="button"
                 onClick={handleFinish}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(251,191,36,0.6)] cursor-pointer active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(251,191,36,0.6)] cursor-pointer active:scale-95 min-h-[44px] w-full sm:w-auto"
               >
                 <span>Enter Portfolio</span>
                 <ArrowRight className="w-4 h-4 text-slate-950" />
@@ -1100,7 +1097,7 @@ export const CosmicBigBangIntro: React.FC<CosmicBigBangIntroProps> = ({ onComple
                 href={personalData.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#120d2a]/90 hover:bg-[#1c1440] border border-purple-500/60 hover:border-purple-300 text-purple-200 hover:text-white font-mono text-xs transition-all cursor-pointer shadow-[0_0_20px_rgba(168,85,247,0.3)] active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#120d2a]/90 hover:bg-[#1c1440] border border-purple-500/60 hover:border-purple-300 text-purple-200 hover:text-white font-mono text-xs transition-all cursor-pointer shadow-[0_0_20px_rgba(168,85,247,0.3)] active:scale-95 min-h-[44px] w-full sm:w-auto"
               >
                 <FileText className="w-3.5 h-3.5 text-purple-400" />
                 <span>View Resume</span>

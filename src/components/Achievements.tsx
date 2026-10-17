@@ -446,13 +446,13 @@ export const Achievements: React.FC = () => {
                 </div>
 
                 {/* Footer with Edge-Compatible Open Document Action */}
-                <div className="px-5 py-4 bg-[#060a1c] border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 sticky bottom-0 z-20">
+                <div className="px-4 sm:px-5 py-3 sm:py-4 bg-[#060a1c] border-t border-slate-800/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sticky bottom-0 z-20">
                   {documentLink ? (
                     <a
                       href={documentLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 hover:from-amber-500 hover:to-orange-500 text-white font-display font-semibold text-xs tracking-wider border border-amber-400/40 transition-all shadow-md active:scale-95"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 hover:from-amber-500 hover:to-orange-500 text-white font-display font-semibold text-xs tracking-wider border border-amber-400/40 transition-all shadow-md active:scale-95 min-h-[44px]"
                     >
                       <FileText className="w-3.5 h-3.5 text-amber-200" />
                       <span>{isPdf ? 'Open Full PDF in New Tab' : 'Open Full File in New Tab'}</span>
@@ -463,7 +463,7 @@ export const Achievements: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleCloseAchievementCert}
-                    className="px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors ml-auto"
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors sm:ml-auto min-h-[44px]"
                   >
                     Close
                   </button>
